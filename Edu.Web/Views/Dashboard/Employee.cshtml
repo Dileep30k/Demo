@@ -1,0 +1,114 @@
+﻿@inject Edu.Service.Interfaces.IUserProviderService userProviderService
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="content-wrapper">
+    
+        <div class="content-header">
+            <div class="container">
+                <div class="row intakeRow">
+                    <div class="col-md-1">
+                        <label class="heading">Scheme: </label>
+                    </div>
+                    <div class="col-md-3 selectschme headingDropdown schmeDropdown">
+                        @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                    </div>
+                    <div class="col-md-2" style="max-width: 130px;">
+                        <label class="heading">Financial Year : </label>
+                    </div>
+                    <div class="col-md-4 selectschme headingDropdown financialDropdown ">
+                        @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "getAllData();"  }))
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+    
+
+ 
+    
+        <div class="content content-data  display-none ">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6">
+                                <div class="card info-card" style="height: 123px; min-height:125px!important">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <h5 class="card-heading-title">Institutes Eligible For</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-4">
+                                                <div class="cardValue">
+                                                    <h6 class="details-card-value intakeInstituteValue" id="intake-institute"></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-6 col-md-6">
+                                <div class="card nomination-card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <h5 class="card-heading-title">Nominations Approval</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 row stepperRow">
+                                                <div class="col-lg-4 pl-4 bcg-green borderRLeft row justify-content-center flex-column">
+                                                    <span id="empapprove" class="stepper-circle">
+                                                    </span>
+                                                    <p class="font-14">You</p>
+                                                </div>
+                                                <div class="col-lg-4 text-center bcg-green  row justify-content-center flex-column align-items-center">
+                                                    <span id="approver1" class="stepper-circle">
+                                                    </span>
+                                                    <p class="font-14">Approver 1</p>
+                                                    <div id="nominationApprover1" class="md-step-bar-left"></div>
+                                                </div>
+                                                <div class="col-lg-4 bcg-green borderRright   text-right  row justify-content-center flex-column align-items-end ">
+                                                    <span id="approver2" class="stepper-circle  mr-5">
+                                                    </span>
+                                                    <p class="font-14  pr-4">Approver 2</p>
+                                                    <div id="nominationApprover2" class="md-step-bar-left"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-6 col-md-6">
+                                <div class="card details-card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <h5 class="card-heading-title">Notice Board</h5>
+                                        </div>
+                                        <div class="row">
+                                            <h6 class="card-value noticeValue" id="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h6>
+                                        </div>
+                                        <div class="row">
+                                            <h6 class="card-value noticeValue" id="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h6>
+                                        </div>
+                                        <div class="row">
+                                            <h6 class="card-value noticeValue" id="">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h6>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+  
+
+</div>
+
+@section Scripts {
+    <script src="~/js/empdashboard.js"></script>
+    }

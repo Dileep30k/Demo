@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Departments";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Departments</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-primary darkbtn float-sm-right" asp-area="" asp-controller="Department" asp-action="Manage" onclick="showLoading();"><img src="~/assets/img/plus_white.svg" /> Create New Department</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="card card-primary">
+                        <div class="card-body tableDiv">
+                            <table id="departmentDatatable" class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/department.js"></script>
+}

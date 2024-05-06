@@ -1,0 +1,55 @@
+@model Edu.Abstraction.Models.Vertical
+
+@{
+    ViewData["Title"] = (Model.VerticalId > 0) ? $"Edit Vertical - {Model.VerticalName}" : "Create New Vertical";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">@(Model.VerticalId > 0 ? $"Edit Vertical - {Model.VerticalName}" : "Create New Vertical")</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-outline-primary float-sm-right" asp-area="" asp-controller="Vertical" asp-action="Index" onclick="showLoading();">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+
+            <form id="verticalForm" enctype="multipart/form-data" class="form-horizontal form-bordered" asp-action="Manage" asp-controller="Vertical">
+                <section class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <input asp-for="VerticalId" type="hidden" id="VerticalId">
+                                    <div class="row">
+                                        <div class="form-group col-8">
+                                            <label for="VerticalName">Vertical Name <span class="required">*</span></label>
+                                            <input maxlength="100" asp-for="VerticalName" type="text" id="VerticalName" class="form-control">
+                                            <span asp-validation-for="VerticalName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="Vertical" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                                <input type="submit" value="Save" class="btn btn-success float-right" onclick="return validateVertical();">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/vertical.js"></script>
+}

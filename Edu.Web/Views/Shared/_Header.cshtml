@@ -1,0 +1,25 @@
+﻿@inject Edu.Service.Interfaces.IUserProviderService userProviderService
+@inject IConfiguration _configuration;
+
+<header id="header" class="header fixed-top d-flex align-items-center headerClass">
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            @if (userProviderService.IsAuthenticated())
+            {
+                <li class="nav-item dropdown nav-profile">
+                    <a id="userMenu" href="#" data-toggle="dropdown" class="nav-link dropdown-toggle">
+                        @userProviderService.UserClaim.Username
+                    </a>
+                    <ul aria-labelledby="userMenu" class="dropdown-menu border-0 shadow">
+                        <li><a asp-controller="Account" asp-action="Logout" class="dropdown-item">Log off </a></li>
+                    </ul>
+                </li>
+
+            }
+        </ul>
+        <input type="hidden" id="websiteBaseUrl" value="@_configuration.GetSection("WebsiteBaseUrl").Value" />
+        <input type="hidden" id="userIsGts" value="@userProviderService.UserClaim.IsGts" />
+        <input type="hidden" id="userIsEmployee" value="@userProviderService.UserClaim.IsEmployee" />
+        <input type="hidden" id="userIsApprover" value="@userProviderService.UserClaim.IsApprover" />
+    </nav>
+</header>

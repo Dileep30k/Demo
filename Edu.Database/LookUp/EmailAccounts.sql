@@ -1,0 +1,2 @@
+﻿INSERT [dbo].[EmailAccounts] ([Email], [DisplayName], [Host], [Port], [Username], [Password], [EnableSsl], [UseDefaultCredentials], [IsDefaultAccount], [IsActive], [CreatedDate], [CreatedBy], [UpdatedDate], [UpdatedBy], [IsDeleted]) VALUES ( N'daimlercmt@techefficio.com', N'Higher Education Mail', N'techefficio.com', 587, N'daimlercmt@techefficio.com', N'lNnD5fFfH;nN', 0, 0, 1, 1, CAST(N'2021-06-14T15:19:54.690' AS DateTime), 1, CAST(N'2021-06-14T15:19:54.690' AS DateTime), 1, 0)
+GO

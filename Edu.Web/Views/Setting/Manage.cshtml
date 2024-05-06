@@ -1,0 +1,70 @@
+@model Edu.Abstraction.Models.Setting
+
+@{
+    ViewData["Title"] = (Model.SettingId > 0) ? $"Edit Setting - {Model.SettingName}" : "Create New Setting";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">@(Model.SettingId > 0 ? $"Edit Setting - {Model.SettingName}" : "Create New Setting")</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-outline-primary float-sm-right" asp-area="" asp-controller="Setting" asp-action="Index" onclick="showLoading();">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+
+            <form id="settingForm" enctype="multipart/form-data" class="form-horizontal form-bordered" asp-action="Manage" asp-controller="Setting">
+                <section class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <input asp-for="SettingId" type="hidden" id="SettingId">
+                                    <input asp-for="SettingKey" type="hidden" id="SettingKey">
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="SettingName">Setting Name<span class="required">*</span></label>
+                                            <input maxlength="100" asp-for="SettingName" type="text" id="SettingName" class="form-control">
+                                            <span asp-validation-for="SettingName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="SettingValue">Setting Value</label>
+                                            <textarea asp-for="SettingValue" type="text" id="SettingValue" class="form-control" ></textarea>
+                                            <span asp-validation-for="SettingValue" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="SettingDesc">Description</label>
+                                            <textarea asp-for="SettingDesc" type="text" id="SettingDesc" class="form-control"></textarea>
+                                            <span asp-validation-for="SettingDesc" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="Setting" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                                <input type="submit" value="Save" class="btn btn-success float-right" onclick="return validateSetting();">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/setting.js"></script>
+}

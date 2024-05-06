@@ -1,0 +1,249 @@
+@using Edu.Abstraction.Models
+@model Intake
+@{
+    ViewData["Title"] = (Model.IntakeId > 0) ? $"Edit Intake - {Model.IntakeName}" : "Create New Intake";
+    var _intitutes = ViewBag.Institutes as List<SelectListItem>;
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <br />
+            <div class="row mb-2">
+                <div class="col-sm-12 d-flex ">
+                    <div>
+                        <a class="backBtn" asp-area="" asp-controller="Intake" asp-action="Index" onclick="showLoading();"><img src="~/assets/img/back_arrow.svg" /></a>
+                    </div>
+                    <h1 class=" innerHeading">@(Model.IntakeId > 0 ? $"Edit Intake - {Model.IntakeName}" : "Create New Intake")</h1>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <section class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class=" card-primary normalform intake">
+                        <form id="formIntake" enctype="multipart/form-data" class="form-horizontal form-bordered"
+                              asp-action="Manage" asp-controller="Intake" autocomplete="off">
+                            <input asp-for="IntakeId" type="hidden" id="IntakeId">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="form-group col-6 d-flex align-items-center">
+                                        <label class="col-4" for="SchemeId">Scheme <span class="required">*</span></label>
+                                        @if (Model.IntakeId > 0)
+                                        {
+                                            @Html.DropDownList("EditSchemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2", @disabled = "disabled" }))
+                                            <input asp-for="SchemeId" type="hidden">
+                                        }
+                                        else
+                                        {
+                                            @Html.DropDownListFor(model => model.SchemeId, (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2", onchange = "getSchemeInstitutes(this);" }))
+                                        }
+                                    </div>
+                                    <div class="form-group col-6  d-flex align-items-center">
+                                        <label class="col-4" for="IntakeName">Intake Name</label>
+                                        <input asp-for="IntakeName" type="text" id="IntakeName" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span asp-validation-for="SchemeId" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span asp-validation-for="IntakeName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-6  inner-addon d-flex align-items-center right-addon intakeDate">
+                                        <label class="col-4" for="StartDate">Intake Start Date  <span class="required">*</span></label>
+                                        <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon.svg" />
+                                        <input autocomplete="off" maxlength="50" asp-for="StartDate" type="text" id="StartDate" class="form-control date-picker" placeholder="Select Date">
+                                    </div>
+                                    <div class="form-group col-6 d-flex align-items-center">
+                                        <label class="col-4" for="locations">Allowed Locations  <span class="required">*</span></label>
+                                        @Html.DropDownList("locations", (List<SelectListItem>)ViewBag.Locations, (new { multiple = "multiple", @class = "form-control select2" }))
+
+                                        @Html.HiddenFor(m => m.SelectedLocations)
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span class="text-danger display-none" id="locations-error">
+                                            Please select location
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-12 d-flex align-items-center institutesSelection inner-addon  instituteDropdown">
+                                        <label class="col-2" for="institutes">Institutes  <span class="required">*</span></label>
+                                        @Html.DropDownList("schemeInstitutes", (List<SelectListItem>)ViewBag.Institutes, (new { multiple = "multiple", @class = "form-control select2" }))
+                                        <img class="glyphicon glyphicons-lock" src="~/assets/img/down_arrow_dropdown.svg" />
+
+                                        @Html.HiddenFor(m => m.SelectedInstitutes)
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span class="text-danger display-none" id="schemeInstitutes-error">
+                                            Please select institute
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 align-items-center" id="intakeIntitutesDiv">
+                                    <div id="intakeIntitutesDatatable" class="insitute-table">
+                                        <div class="row font-bold addInstitutes">
+                                            <div class="form-group col-4 instituteDetails">
+                                                Institute Name
+                                            </div>
+                                            <div class="form-group col-4 instituteDetails">
+                                                Number of seats
+                                            </div>
+                                            <div class="form-group col-4 instituteDetails">
+                                                Admission Cut-off Date
+                                            </div>
+                                        </div>
+                                        <div id="intakeIntituteDetails" class="intakeDeatails">
+                                            @for (var i = 0; i < Model.Institutes.Count; i++)
+                                            {
+                                                var instititeId = Model.Institutes[i].InstituteId.ToString();
+                                                Model.Institutes[i].InstitueName = _intitutes.FirstOrDefault(i => i.Value == instititeId).Text;
+                                                @await Html.PartialAsync("_IntakeInstitute", Model.Institutes[i])
+                                                ;
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-6 mt-2 inner-addon d-flex align-items-center right-addon intakeDate">
+                                        <label class="col-4" for="NominationCutoffDate">Nomination Cutoff Date  <span class="required">*</span></label>
+                                        <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon.svg" />
+                                        <input maxlength="50" asp-for="NominationCutoffDate" type="text" id="NominationCutoffDate" class="form-control date-picker" placeholder="Nomination Cuttoff Date">
+
+                                    </div>
+                                    <div class="form-group col-lg-6 col-md-6 col-6 mt-2 inner-addon d-flex align-items-center right-addon intakeDate">
+                                        <label class="col-4" for="ExamDate">Exam Date <span class="required">*</span></label>
+                                        <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon.svg" />
+                                        <input maxlength="50" asp-for="ExamDate" type="text" id="ExamDate" class="form-control date-picker" placeholder="Select Date">
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span asp-validation-for="NominationCutoffDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span asp-validation-for="ExamDate" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-lg-6 col-md-6 col-6 mt-2 inner-addon d-flex align-items-center right-addon intakeDate">
+                                        <label class="col-4" for="ScorecardCutoffDate">Scorecard Cutoff Date  <span class="required">*</span></label>
+                                        <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon.svg" />
+                                        <input maxlength="50" asp-for="ScorecardCutoffDate" type="text" id="ScorecardCutoffDate" placeholder="Select Date"
+                                               class="form-control date-picker">
+
+                                    </div>
+                                    <div class="form-group col-6 d-flex align-items-center mt-2">
+                                        <label class="col-4">Score Upload <span class="required">*</span></label>
+                                        <div class="row col-7">
+                                            <div class="form-group col-4 m-0">
+                                                <label for="IsGTSScoreUpload">
+                                                    <span class="checkbox-text">
+                                                        <input asp-for="IsGTSScoreUpload" type="radio" id="IsGTSScoreUpload" class="radio" value="true">
+                                                        <span class="checkboxText">GTS</span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div class="form-group col-8 m-0">
+                                                <label for="IsEmplyoeeScoreUpload">
+                                                    <span class="checkbox-text">
+                                                        <input asp-for="IsGTSScoreUpload" type="radio" id="IsEmplyoeeScoreUpload" class="radio" value="false">
+                                                        <span class="checkboxText">
+                                                            Employee
+                                                        </span>
+                                                    </span>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span asp-validation-for="ScorecardCutoffDate" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span class="text-danger display-none" id="scoreUpload-error">
+                                            Please select score upload
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-12 col-lg-12  d-flex align-items-center institutesSelection inner-addon instituteDropdown">
+                                        <label class="col-2" for="documentTypes">Documents  <span class="required">*</span></label>
+                                        @Html.DropDownList("documentTypes", (List<SelectListItem>)ViewBag.DocumentTypes, (new { multiple = "multiple", @class = "form-control select2 documentClass" }))
+                                        <img class="glyphicon glyphicons-lock" src="~/assets/img/down_arrow_dropdown.svg" />
+
+                                        @Html.HiddenFor(m => m.SelectedDocumentTypes)
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-2 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 d-flex align-items-center">
+                                        <span class="text-danger display-none" id="documentTypes-error">
+                                            Please select document
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-12 col-lg-12  d-flex align-items-center ">
+                                        <label class="col-2" for="Brochure">Brochure </label>
+                                        <input asp-for="Brochure" type="file" id="Brochure">
+                                    </div>
+                                    @if (!string.IsNullOrEmpty(Model.BrochureFilePath))
+                                    {
+                                        <a href="~/@Model.BrochureFilePath" target="_blank">@Model.BrochureFileName</a>
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <input type="submit" value="Save" class="btn btn-primary darkbtn  float-right" style="font-size:12px" onclick="return validateIntake();">
+                                <a asp-controller="Intake" asp-action="Index" class="btn btn-outline-primary float-right">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/intake.js"></script>
+}

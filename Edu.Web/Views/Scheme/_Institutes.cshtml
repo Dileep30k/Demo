@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="card card-primary">
+            <div class="card-body">
+                <div class="row">
+                    <div class="form-group col-11">
+                        <label>Add Institute</label>
+                        @Html.DropDownList("InstituteId", (List<SelectListItem>)ViewBag.Institutes, (new { @class = "form-control select2" }))
+                    </div>
+                    <div class="form-group col-1 mt-2rem">
+                        <input type="button" value="Save" class="btn btn-success" onclick="addInstitute()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="institute-list">
+</div>

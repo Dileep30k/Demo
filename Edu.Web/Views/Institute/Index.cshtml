@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "Institutes";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6  mainPageHeading">
+                    <br />
+                    <h1 class="m-0 innerHeading"> Institutes</h1>
+                </div>
+                <div class="col-sm-6">
+                    <br />
+                    <a class="btn btn-primary darkbtn float-sm-right" asp-area="" asp-controller="Institute" asp-action="Manage" onclick="showLoading();"><img src="~/assets/img/plus_white.svg" /> &nbsp; Add New Institute</a>
+                </div>
+            </div>
+            <div class="row g-3  align-items-center ">
+                <div class="col-lg-4 col-md-6 col-12 mb-2 mb-md-0 pl-2 mt-2 ">
+                    <div class="searchBarspanintake d-flex align-items-center pl-2 pr-0 col-11">
+                        <img src="~/assets/img/search.svg" />
+                        <input class="searchBar searchintake pl-1" type="text" placeholder="Search" id="searchValue" />
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mt-2 selectschme schemeDropdown ">
+                    @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass" }))
+                </div>
+                <div class=" col-md-3 mt-2 instituteBtns">
+                    <button id="btn-excel-export" type="button" class="btn btn-outline-primary lightBtn exportBtn"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>&nbsp;
+                </div>
+                <div class="col-lg-3 col-md-6 mt-2 text-right instituteBtns ">
+                    <button id="btnFilterClear" class="btn btn-secondary clearBtn"> <img src="~/assets/img/reset.svg" /> Reset</button>
+                    <button id="btnFilter" class="btn btn-outline-primary lightBtn">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class=" card-primary">
+                        <div class="card-body p-0 ">
+                            <table id="instituteDatatable" class="table table-striped    datatable tableDiv">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Institute Name</th>
+                                        <th class="no-sort">Scheme</th>
+                                        <th class="no-sort">Institute Contact Information</th>
+                                        <th class="no-sort">Institute Phone Number</th>
+                                        <th class="no-sort">No of Batches Running</th>
+                                        <th class="no-sort">No of Employees Enrolled</th>
+                                        <th class="no-sort">Batch Details</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/institute.js"></script>
+}

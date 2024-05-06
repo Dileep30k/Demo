@@ -1,0 +1,52 @@
+@{
+    ViewBag.Title = "Batches";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0"> Batches</h1>
+                </div>
+                <div class="col-sm-6">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <section class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-primary">
+                        <div class="card-body tableDiv">
+                            <table id="batchDatatable" class="table datatable">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No</th>
+                                        <th>Batch ID</th>
+                                        <th>Batch Start Date</th>
+                                        <th>Academic Year</th>
+                                        <th>Scheme Name</th>
+                                        <th>Intake Name</th>
+                                        <th>Institute Name</th>
+                                        <th>No of Seats</th>
+                                        <th>Total Course Fee</th>
+                                        <th class="no-sort">Employees</th>
+                                        <th class="no-sort">Payment Schedule</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/batch.js"></script>
+}

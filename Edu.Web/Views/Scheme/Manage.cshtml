@@ -1,0 +1,116 @@
+@model Edu.Abstraction.Models.Scheme
+@{
+    ViewData["Title"] = (Model.SchemeId > 0) ? $"Edit Scheme - {Model.SchemeName}" : "Create New Scheme";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2 headingScheme">
+                <div class="col-sm-12 d-flex" style="margin-top: 30px">
+
+                        <div> 
+                            <a class="backBtn" asp-area="" asp-controller="Scheme" asp-action="Index" onclick="showLoading();"> <img src="~/assets/img/back_arrow.svg" /> </a>
+                       </div>
+                       <h1 class=" innerHeading">@(Model.SchemeId > 0 ? $"Edit Scheme - {Model.SchemeName}" : "Add New Scheme")</h1>
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="content">
+        <section class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class=" card-primary">
+                <div class="col-md-12 settingForms">
+                    <div class=" card-primary">
+                        <form id="formScheme" enctype="multipart/form-data" class="form-horizontal form-bordered"
+                              asp-action="Manage" asp-controller="Scheme">
+                            <input asp-for="SchemeId" type="hidden" id="SchemeId" placeholder="Scheme Id">
+                                    <div class="card-body normalform">
+                                <div class="row">
+                                    <div class="form-group col-6 d-flex align-items-center">
+                                        <label class="w-100 col-4" for="SchemeName">Scheme Name <span class="required">*</span></label>
+                                        <input maxlength="100" asp-for="SchemeName" type="text" id="SchemeName" class="form-control" placeholder="Scheme Name">                                        
+                                    </div>
+                                    <div class="form-group col-6 d-flex align-items-center">
+                                        <label class="w-100 col-4" for="SchemeCode">Scheme Code <span class="required">*</span></label>
+                                       <input maxlength="50" asp-for="SchemeCode" type="text" id="SchemeCode" class="form-control" placeholder="Scheme Code">
+                                       
+                                    </div>
+                                </div>
+                                <div class="row">
+                                            <div class="form-group col-2 d-flex align-items-center">
+                                            </div>
+                                            <div class="form-group col-4 d-flex align-items-center">
+                                                <span asp-validation-for="SchemeName" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-2 d-flex align-items-center">
+                                            </div>
+                                            <div class="form-group col-4 d-flex align-items-center">
+                                                <span asp-validation-for="SchemeCode" class="text-danger"></span>
+                                            </div>
+                                </div>
+                                <div class="row">
+
+                                            <div class="form-group col-6 d-flex align-items-center">
+                                                <label class="w-100 col-4" for="Duration">Duration <span class="required">*</span></label>
+                                                <input maxlength="3" asp-for="Duration" type="text" id="Duration" class="form-control numberOnly" placeholder="Scheme Duration">
+                                                    
+                                           </div>
+                                            <div class="form-group col-6 d-flex align-items-center">
+                                                <label class="w-100 col-4" for="DurationType">Duration Type <span class="required">*</span></label>
+                                        @Html.DropDownListFor(model => model.DurationTypeId, (List<SelectListItem>)ViewBag.DurationTypes, (new { @class = "form-control select2" }))
+                                       
+                                    </div>
+                                </div>
+                                        <div class="row">
+                                            <div class="form-group col-2 d-flex align-items-center">
+                                            </div>
+                                            <div class="form-group col-4 d-flex align-items-center">
+                                                <span asp-validation-for="Duration" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-2 d-flex align-items-center">
+                                            </div>
+                                            <div class="form-group col-4 d-flex align-items-center">
+                                                <span asp-validation-for="DurationTypeId" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                <div class="row">
+                                            <div class="form-group col-12 d-flex align-items-center institutesSelection inner-addon  instituteDropdown">
+                                                <label class="col-2" for="SchemeName">Institutes <span class="required">*</span></label>
+                                                @Html.DropDownList("institutes", (List<SelectListItem>)ViewBag.Institutes, (new { multiple = "multiple", @class = "form-control select2" }))
+                                                <img class="glyphicon glyphicons-lock" src="~/assets/img/down_arrow_dropdown.svg" />
+                                      
+                                        @Html.HiddenFor(m => m.SelectedInstitutes)
+                                    </div>
+
+                                </div>
+                                        <div class="row">
+                                            <div class="form-group col-2 d-flex align-items-center">
+                                            </div>
+                                            <div class="form-group col-4 d-flex align-items-center">
+                                                <span class="text-danger display-none" id="institutes-error">
+                                                    Please select institute
+                                                </span>
+                                            </div>
+                                        </div>
+                            </div>
+                            <div class="card-footer footerBtn">
+                                 <input type="submit" value="Save" class="btn btn-primary darkbtn  float-right" onclick="return validateScheme();">
+                                 <a asp-controller="Scheme" asp-action="Index" class="btn btn btn-outline-primary btn-secondary float-right">Cancel</a>
+                            </div> 
+                        </form>
+                    </div>
+                </div>
+            </div>
+            </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/scheme.js"></script>
+}

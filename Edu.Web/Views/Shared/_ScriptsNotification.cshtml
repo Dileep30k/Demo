@@ -1,0 +1,12 @@
+﻿@{
+    var notification = TempData["Notification"] != null ?
+            JsonConvert.DeserializeObject<AlertNotificationModel>(TempData["Notification"] as string) : new AlertNotificationModel();
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if ('@(notification.Message)' != '') {
+            displayToastr('@(notification.Message)', '@(notification.Title)', '@(notification.Type)');
+        }
+    });
+</script>

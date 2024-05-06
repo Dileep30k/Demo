@@ -1,0 +1,133 @@
+﻿@model Edu.Abstraction.ComplexModels.LoginModel
+
+@{
+    ViewData["Title"] = "Login";
+    var expiredSession = ViewBag.ExpiredSession != null;
+    Layout = "_LayoutLogin";
+}
+
+<div class="row login-row">
+
+    <div class="col-6 login-column login-columnAdmin" >
+        <div class="d-flex py-4 logo-header header-logo">
+            <img src="~/assets/img/logo_MS.png" alt="" class="msLogo">
+        </div>
+        <div class="d-flex py-4 body-image">
+            <img src="~/assets/img/login_page.svg" alt="" class="image">
+        </div>
+    </div>
+    <div class="col-6 login-column login-Admin">
+        <section class="section register  d-flex flex-column">
+            <div class="container">
+                <div class="row ">
+                    <div class="col-12">
+                        <div class="d-flex flex-column">
+                            <div class="card-body pb-0">
+
+                                <div class="d-flex py-4  ohes-Img">
+                                   
+                                    <img src="~/assets/img/msta_logo_2.svg" alt="" class="marutiTrainingLogo">
+                                </div>
+
+                                <div class="col form-ohes-login ohesLoginAdmin">
+                                    <div class="col pt-4 pb-2 card-login">
+                                        <h5 class="card-title text-center pb-0 fs-4 login-text login-text1">Log In </h5>
+                                    </div>
+                                    @using (Html.BeginForm("Index", "Account", new { ReturnUrl = Model.ReturnUrl }, FormMethod.Post, true, new
+                                    {
+                                        id = "formLogin",
+                                        @class = "loginForm",
+                                    }))
+                                    {
+                                        @if (Model.ForceLogin)
+                                        {
+                                            <div>
+                                                @Html.HiddenFor(model => model.MsilUserId)
+                                                @Html.HiddenFor(model => model.Password)
+                                                @Html.HiddenFor(model => model.ForceLogin)
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="col mb-4">
+                                                <div class="input-group ">
+                                                    <input asp-for="MsilUserId" type="text" class="form-control loginControl numberOnly" placeholder="Staff Id">
+                                                   @* <div class="input-group-append">
+                                                        <div class="input-group-text">
+                                                            <span class="fas fa-user"></span>
+                                                        </div>
+                                                    </div>*@
+                                                </div>
+                                                <div>
+                                                    <span asp-validation-for="MsilUserId" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col mb-4">
+                                                <div class="input-group">
+                                                    <input asp-for="Password" type="password" class="form-control loginControl" placeholder="Password">
+                                                   @* <div class="input-group-append">
+                                                        <div class="input-group-text">
+                                                            <span class="fas fa-lock"></span>
+                                                        </div>
+                                                    </div>*@
+                                                </div>
+                                                <div>
+                                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="row">
+                                            @if (Model.ForceLogin)
+                                            {
+                                                <div class="col-6">
+                                                    <button type="button" class="btn default  w-100" data-bs-dismiss="modal" onclick="resetLogin();">
+                                                        Cancel
+                                                    </button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <button class="btn btn-primary w-100" type="submit" id="btnLogin">Force Login</button>
+                                                </div>
+
+                                            }
+                                            else
+                                            {
+                                                <div class="col mb-4">
+                                                    <button class="btn btn-primary loginBtn btn-block" type="submit" onclick="validateLogin();" id="btnLogin">Login</button>
+
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+
+                                    <div class="row">
+                                        @*<label class="deText">Powered by DE</label>*@
+                                        <img class="poweredLogo deText"  src="~/assets/img/Powered by de.png"/>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                   
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            if ('@(expiredSession)' == 'True') {
+                displayModel('expSessionModal');
+            }
+        });
+
+    </script>
+    <script src="~/js/account.js"></script>
+}

@@ -1,0 +1,321 @@
+﻿@inject Edu.Service.Interfaces.IUserProviderService userProviderService
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<div class="content-wrapper">
+    
+        <div class="content-header">
+            <div class="container">
+                <div class="row intakeRow">
+                    <div class="col-md-1">
+                        <label class="heading">Scheme: </label>
+                    </div>
+                    <div class="col-md-3 selectschme headingDropdown schmeDropdown">
+                        @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                    </div>
+                    <div class="col-md-2" style="max-width: 130px;">
+                        <label class="heading">Financial Year : </label>
+                    </div>
+                    <div class="col-md-4 selectschme headingDropdown financialDropdown ">
+                        @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "getAllData();"  }))
+                    </div>
+                    <br />
+                    <br />
+                    <br />
+                </div>
+            </div>
+        </div>
+ 
+
+   
+        <div class="content content-data" style="margin-top: -46px;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-xxl-2 col-md-2">
+                                <a href="~/Eligibility">
+                                    <div class="card info-card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <h5 class="card-heading-title">Total Eligible</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="ps-3 cardValue">
+                                                        <h6 class="card-value" id="total-eligible"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xxl-3 col-md-3">
+                                <a href="~/Nomination">
+                                    <div class="card info-card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <h5 class="card-heading-title">Total Nominations</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="ps-3 cardValue">
+                                                        <h6 class="card-value" id="total-nominations"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xxl-2 col-md-2">
+                                <div class="card info-card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <h5 class="card-heading-title">Total Institutes</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="card-value" id="total-institute"></h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3">
+                                <a href="~/Admission">
+                                    <div class="card info-card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <h5 class="card-heading-title">Total Admissions</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="ps-3 cardValue">
+                                                        <h6 class="card-value" id="total-admissions"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="col-xxl-2 col-md-2">
+                                 <a href="~/Admission">
+                                    <div class="card info-card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <h5 class="card-heading-title">Total Waitlisted</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="ps-3 cardValue">
+                                                        <h6 class="card-value" id="total-waillist"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xxl-4 col-md-4">
+                                <div class="card enrollment-card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <h5 class="card-heading-title">Enrollment Levels</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <canvas class="pieChart" id="pieChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-5 col-md-5">
+                                <div class="card division-card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <h5 class="card-heading-title">Division Analytics</h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <canvas class="barChart" id="barChart"></canvas>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xxl-3 col-md-3">
+                                <div class="card details-card">
+                                    <div class="card-body">
+                                        <a href="~/Admission">
+                                            <div class="row">
+                                                <h5 class="pending-heading">Pending Service Agreements</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="ps-3 cardValue">
+                                                        <h6 class="card-value" id="pending-sa"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="~/Admission">
+                                            <div class="row">
+                                                <h5 class="pending-heading">
+                                                    Pending Nomination Acceptance
+                                                </h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="ps-3 cardValue">
+                                                        <h6 class="card-value" id="pending-ac"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        <a href="~/Admission">
+                                            <div class="row">
+                                                <h5 class="pending-heading">Pending Admission Confirmation</h5>
+                                            </div>
+                                            <div class="row">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="ps-3 cardValue">
+                                                        <h6 class="card-value" id="pending-confirm"></h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="row" style="display: none">
+                    <div class="col-xxl-12 col-md-12">
+                        <div class="card pendings-card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <h5 class="card-heading-title">Details</h5>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xxl-1 colDetails">
+                                        <div class="row">
+                                            <h5 class="details-heading">
+                                                Partner Institute
+                                            </h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="details-card-value">BITS Pilani</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-1 colDetails">
+                                        <div class="row">
+                                            <h5 class="details-heading">
+                                                Annual Seats
+                                            </h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="details-card-value">80</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-2 colDetails">
+                                        <div class="row">
+                                            <h5 class="details-heading">
+                                                Total Enrolled Batches
+                                            </h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="details-card-value">08</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-2 colDetails">
+                                        <div class="row">
+                                            <h5 class="details-heading">
+                                                Currently Active Batches
+                                            </h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="details-card-value">04</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-2 colDetails">
+                                        <div class="row">
+                                            <h5 class="details-heading">
+                                                Total Enrolled Students
+                                            </h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="details-card-value">320</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-2 colDetails">
+                                        <div class="row">
+                                            <h5 class="details-heading">
+                                                Currently Running Numbers
+                                            </h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="details-card-value">154</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xxl-1 colDetails">
+                                        <div class="row">
+                                            <h5 class="details-heading">
+                                                No. of Pass Students
+                                            </h5>
+                                        </div>
+                                        <div class="row">
+                                            <div class="d-flex align-items-center">
+                                                <div class="ps-3 cardValue">
+                                                    <h6 class="details-card-value">147</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> 
+            </div>
+        </div>
+  
+  
+</div>
+
+@section Scripts {
+    <script src="~/js/dashboard.js"></script>
+    }

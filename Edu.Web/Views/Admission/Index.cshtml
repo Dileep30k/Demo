@@ -1,0 +1,434 @@
+﻿@{
+    ViewData["Title"] = "Admissions";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container ml-1">
+            <div class="row g-3 intakeRow admisHeight">
+                <div class="col-md-1">
+                    <label class="heading">Scheme: </label>
+                </div>
+                <div class="col-md-2 selectschme headingDropdown schmeDropdown" style="max-width: 23%; flex: 0 0 23%;">
+                    @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                </div>
+                <div class="col-md-2" style="max-width: 130px !important;">
+                    <label class="heading">Financial Year : </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown financialDropdown ">
+                    @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "getIntakeInstitutes(this);"  }))
+                </div>
+                <div class="col-md-1">
+                    <label class="heading">Institute : </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown intakeDropdown">
+                    @Html.DropDownList("instituteId", (List<SelectListItem>)ViewBag.Institutes, (new { @class = "form-control select2 dropdownClass", onchange = "getAdmission(this);"  }))
+                </div>
+            </div>
+            <div class="row g-3 intakeRow admisHeight batchRow">
+                <div class="col-md-1">
+                    <label class="heading">Batch : </label>
+                </div>
+                <div class="col-md-2 selectschme headingDropdown intakeDropdown">
+                    @Html.DropDownList("batchId", (List<SelectListItem>)ViewBag.Batches, (new { @class = "form-control select2 dropdownClass" }))
+                </div>
+                <br />
+                <br />
+                <br />
+            </div>
+            <div class="display-none upload-content mt-2">
+                <div class="row g-3 pl-2">
+                    <a href="javascript:void(0)" onclick="toggleContent()" class="font-t-blue font-bold ">
+                        <img class="backimg mb-1 pr-1" src="~/assets/img/back_arrow.svg" />
+                        Upload Result
+                    </a>
+
+                    <br />
+                </div>
+                @*<div id="uploadTitle" class="font-16 mt-3 font-bold ">
+                </div>*@
+                <div class="row g-3 ">
+                    <div class="col-6  p-2 font-14">
+                        @*Upload Result*@
+                    </div>
+                    <div class="col-6 text-right  p-2">
+                        <a href="~/Samples/Admissions.xlsx" class="dwnloadTemplt">
+                            Download Template
+                        </a>
+                    </div>
+                </div>
+                <div class="row g-3 mt-1">
+                    <div class="col-md-12">
+                        <div class=" card-primary dragfile">
+                            <div class="card-body text-center cursor-pointer dropZone" id="dropZoneAdmission" onclick="openUpload();">
+                                <div class="mb-3">
+                                    <img class="xlsIcon" src="~/assets/img/xls_icon.svg" />
+                                </div>
+                                <div class="font-16 eligibilityDrag">
+                                    Drag your excel file or
+                                    <a class="font-t-blue font-bold" href="javascript:void(0)">
+                                        Browse File
+                                    </a>
+                                </div>
+                                <div class="eligibilityinst mt-2">
+                                    File should be only in .xls and .xlsx
+                                </div>
+                            </div>
+                            <input class="display-none" type="file" name="file" id="uploadFile">
+                        </div>
+                    </div>
+                    <div id="uploadError" class="error-details">
+                    </div>
+                    <div id="admissionUserDiv" class="col-lg-12 display-none eligibilityexceltable">
+                        <div class="card-primary ">
+                            <div class="card-body  pl-2 pr-1">
+                                <table id="admissionUserDatatable" class="table datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th class="th.sorting">Staff No.</th>
+                                            <th>Staff Name</th>
+                                            <th>Staff Email</th>
+                                            <th>Staff Mobile No.</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div class="card-footer pr-2">
+                                <input type="button" value="Upload" class="btn btn-primary darkbtn  float-right" onclick="saveAdmissions();">
+                                <a href="javascript:void(0)" onclick="toggleContent()" class="btn btn-outline-primary float-right">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content list-content ">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 eligibilityTablepage pr-0 no-selected-institute bg-blue-ad">
+                    Please select Scheme to upload/view result.
+                </div>
+                <div class="col-lg-10 eligibilityTablepage pr-0 selected-institute display-none bg-blue-ad">
+                    No result have been uploaded yet.
+                </div>
+                <div class="col-lg-2 selected-institute display-none">
+                    <input type="button" value="Upload Result" class="btn btn-primary darkbtn  float-right" onclick="toggleContent(true);">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content grid-content  display-none">
+        <div class="container">
+            <div class="pl-3">
+                <div class="row mt-3">
+                    <div class="col-lg-10 row stepperRow">
+                        <div class="col-lg-4 pl-4 bcg-blue borderRLeft row justify-content-center flex-column" >
+                            <span class="stepper-circle selected">
+                            </span>
+                            <p class="font-14">You</p>
+                           @* <div id="lineApprover" class="md-step-bar-right"></div>*@
+                        </div>
+                        <div class="col-lg-4 text-center bcg-blue  row justify-content-center flex-column align-items-center">
+                            <span id="approver1" class="stepper-circle">
+                            </span>
+                            <p class="font-14">Approver 1</p>
+                            <div id="lineApprover1" class="md-step-bar-left"></div>
+                        </div>
+                        <div class="col-lg-4 bcg-blue borderRright   text-right  row justify-content-center flex-column align-items-end ">
+                            <div id="approver2" class="stepper-circle  mr-5">
+                            </div>
+                            <p class="font-14  pr-4">Approver 2</p>
+                            <div id="lineApprover2" class="md-step-bar-left"></div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 text-right pr-0 darkBtnDisabled " style="flex: 0 0 17.666667%;right: -2px;max-width:17.666667%">
+                        <button type="button" class="btn btn-outline-primary lightBtn" onclick="displayModel('templateModal')">@*<img src="~/assets/img/View.png" />*@ View Email Template</button>
+                        <button id="btnPublish" type="button" class="btn btn-primary darkbtn" onclick="publishAdmissions(); ">Publish Result</button>
+                        <button id="btnRePublish" type="button" class="btn btn-primary darkbtn" style="padding:7px 24px" onclick="rePublishAdmissions(); ">Re-Upload Result</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-lg-12 eligibilityTablepage pr-0">
+                    <div>
+                        <div class=" card-primary  eligibilitytablegts">
+                            <div class="card-body  p-0">
+                                <table id="admissionDatatable" class="eligibilitytable table datatable mt-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th class="th.sorting">Staff No.</th>
+                                            <th>Staff Name</th>
+                                            <th>Staff Email</th>
+                                            <th>Staff Mobile No.</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content publish-content  display-none">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="  card-outline card-outline-tabs admisionList">
+                        <div class="card-header p-0 border-bottom-0">
+                            <ul class="nav nav-tabs" id="custom-tabs-four-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active pl-1" id="all-tab" data-toggle="pill" href="#all" role="tab" aria-controls="all" aria-selected="true" onclick="resizeDataTable();">
+                                        <label>All Candidates</label>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="confirmed-tab" data-toggle="pill" href="#confirmed" role="tab" aria-controls="confirmed" aria-selected="false" onclick="resizeDataTable();">
+                                        <label> Confirmed Candidates</label>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-body pl-0 pr-0">
+                            <div class="tab-content" id="custom-tabs-four-tabContent">
+                                <div class="tab-pane fade active show" id="all" role="tabpanel" aria-labelledby="custom-tabs-four-home-tab">
+                                    <div class="row g-3">
+                                        <div class="col-lg-9 ">
+                                            <div class="row">
+                                                <div class="col-lg-3 col-md-6 mt-2 pl-2  " style="max-width: 26%;">
+                                                    @Html.DropDownList("admissionStatusId", (List<SelectListItem>)ViewBag.AdmissionStatuses, (new { @class = "form-control select2 dropdownClass", }))
+                                                </div>
+                                                <div class="col-lg-4 col-md-6 mt-2">
+                                                    @Html.DropDownList("serviceBondAccepted", (List<SelectListItem>)ViewBag.BondTypes, (new { @class = "form-control select2 dropdownClass", }))
+                                                </div>
+                                                <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                                                    <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                                                    <input type="text" class="form-control date-picker search-date" placeholder="Start Date" id="startDate" />
+                                                </div>
+                                                <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                                                    <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                                                    <input type="text" class="form-control date-picker search-date" placeholder="End Date" id="endDate" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3 col-md-6 mt-2 text-right pr-0">
+                                            <button id="btnFilterClear" class="btn btn-secondary clearBtn"> <img src="~/assets/img/reset.svg" /> Reset</button>
+                                            <button id="btnFilter" class="btn btn-outline-primary lightBtn mr-0">Apply Filters</button>&nbsp;
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 eligibilityTableTop mt-3">
+                                        <div class="col col-md-12 mt-2 tabletop d-flex">
+                                            <div class="col-3 searchBarspanintake d-flex align-items-center pl-2">
+                                                <img src="~/assets/img/search.svg" />
+                                                <input class="searchBar" type="text" placeholder="Search" id="searchValue" />
+                                            </div>
+                                            <button style="border:none;  background:transparent"><img src="~/assets/img/select.svg" /></button>
+                                            <button type="button" class="btn btn-outline-primary lightBtn" onclick="exportAllAdmission()"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>
+                                        </div>
+                                    </div>
+                                    <div class="row g-3 eligibilityTableTop mt-3">
+                                        <div class="col-lg-12 eligibilityTablepage pr-0 admPub">
+                                            <div>
+                                                <div class=" card-primary  eligibilitytablegts">
+                                                    <div class="card-body  p-0">
+                                                        <table id="admissionAllDatatable" class="eligibilitytable table datatable mt-0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Status</th>
+                                                                    <th>Rank</th>
+                                                                    <th class="th.sorting">Staff ID</th>
+                                                                    <th>Staff Name</th>
+                                                                    <th>Staff Email</th>
+                                                                    <th>Staff Mobile No.</th>
+                                                                    <th>Intake Start Date</th>
+                                                                    <th>Confirmation by<br />Employee</th>
+                                                                    <th>Remarks</th>
+                                                                    <th>Confirmation by<br />Institute</th>
+                                                                    <th>Documents</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="confirmed" role="tabpanel" aria-labelledby="confirmed-tab">
+                                    <div class="display-none pl-1 confirm-upload-content ">
+                                        <div class="row g-3">
+                                            <div class="col-6  font-14">
+                                                Upload confirmed list
+                                            </div>
+                                            <div class="col-6 text-right  ">
+                                                <a href="~/Samples/ConfirmAdmissions.xlsx" class="dwnloadTemplt">
+                                                    Download Template
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 mt-1">
+                                            <div class="col-md-12">
+                                                <div class=" card-primary dragfile">
+                                                    <div class="card-body text-center cursor-pointer dropZone" id="dropZoneConfirm" onclick="openUploadConfirm();">
+                                                        <div class="mb-3">
+                                                            <img class="xlsIcon" src="~/assets/img/xls_icon.svg" />
+                                                        </div>
+                                                        <div class="font-16 eligibilityDrag">
+                                                            Drag your excel file or
+                                                            <a class="font-t-blue font-bold" href="javascript:void(0)">
+                                                                Browse File
+                                                            </a>
+                                                        </div>
+                                                        <div class="eligibilityinst mt-2">
+                                                            File should be only in .xls and .xlsx
+                                                        </div>
+                                                    </div>
+                                                    <input class="display-none" type="file" name="file" id="uploadFileConfirm">
+                                                </div>
+                                            </div>
+                                            <div id="uploadErrorConfirm" class="error-details">
+                                            </div>
+                                            <div id="confirmUserDiv" class="col-lg-12 display-none eligibilityexceltable">
+                                                <div class="card-primary ">
+                                                    <div class="card-body  p-0">
+                                                        <table id="confirmUserDatatable" class="table datatable">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>Sr No.</th>
+                                                                    <th class="th.sorting">Staff No.</th>
+                                                                    <th>Staff Name</th>
+                                                                    <th>Staff Email</th>
+                                                                    <th>Staff Mobile No.</th>
+                                                                </tr>
+                                                            </thead>
+                                                        </table>
+                                                    </div>
+                                                    <div class="card-footer pr-2">
+                                                        <input type="button" value="Upload" class="btn btn-primary darkbtn  float-right" onclick="saveConfirmAdmissions();">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="display-none confirm-list-content mt-2">
+                                        <div class="row g-3 eligibilityTableTop mt-3">
+                                            <div class="col col-md-12 mt-2 tabletop d-flex">
+                                                <div class="col-3 searchBarspanintake d-flex align-items-center pl-2">
+                                                    <img src="~/assets/img/search.svg" />
+                                                    <input class="searchBar" type="text" placeholder="Search" id="searchConfirmValue" />
+                                                </div>
+                                                <button style="border:none;  background:transparent"><img src="~/assets/img/select.svg" /></button>
+                                                <button type="button" class="btn btn-outline-primary lightBtn" onclick="exportConfirmAdmission()"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>
+                                            </div>
+                                        </div>
+                                        <div class="row g-3 eligibilityTableTop mt-3">
+                                            <div class="col-lg-12 eligibilityTablepage pr-0">
+                                                <div>
+                                                    <div class=" card-primary  eligibilitytablegts">
+                                                        <div class="card-body  p-0">
+                                                            <table id="confirmAdmissionDatatable" class="table datatable">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th class="no-sort">Sr. No.</th>
+                                                                        <th class="th.sorting">Staff No.</th>
+                                                                        <th>Staff Name</th>
+                                                                        <th>Staff Email</th>
+                                                                        <th>Staff Mobile No.</th>
+                                                                        <th>Status</th>
+                                                                        <th>Semester</th>
+                                                                        <th>DEPT</th>
+                                                                        <th>DIV</th>
+                                                                        <th>Vertical</th>
+                                                                        <th>Location</th>
+                                                                        <th>Reporting<br />Manager</th>
+                                                                        <th>Remarks</th>
+                                                                        <th class="notexport">Document</th>
+                                                                    </tr>
+                                                                </thead>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="templateModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Email Template</h5>
+            </div>
+            <div class="modal-body eligibilityEmail pb-0">
+                @Html.Raw(ViewBag.Template)
+            </div>
+            <div class="camodalrd-footer text-right pr-2 ">
+                <a href="javascript:void(0)" onclick="hideModel('templateModal')" class="btn btn-primary darkbtn btn-secondary ">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="actionModal" tabindex="-1">
+    <div class="modal-dialog modal-none modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Admission Action</h5>
+            </div>
+            <div class="modal-body pb-0 ">
+                <div class="row align-items-center pb-3 ">
+                    <div class="form-group col-lg-3 color-3a headerScoreCardExport">
+                        Status  <span class="required">*</span>
+                    </div>
+                    <div class="form-group col-lg-9  exportScoreCardDrdn">
+                        @Html.DropDownList("updateAdmissionStatusId", (List<SelectListItem>)ViewBag.UpdateStatuses, (new { @class = "form-control select2 dropdownClass" }))
+                        <span id="updateStatusError" class="display-none text-danger">
+                            Please select status
+                        </span>
+                    </div>
+                </div>
+                <div class="row align-items-center pb-3 ">
+                    <div class="form-group col-lg-3 color-3a headerScoreCardExport">
+                        Remarks  <span class="required">*</span>
+                    </div>
+                    <div class="form-group col-lg-9  exportScoreCardDrdn">
+                        <input id="updateStatusRemarks" type="text" class="form-control" />
+                        <span id="updateStatusRemarksError" class="display-none text-danger">
+                            Please enter remarks
+                        </span>
+                    </div>
+                </div>
+                <div class="row align-items-center pb-3 ">
+                    <div class="form-group col-lg-3 color-3a headerScoreCardExport">
+                        Document  <span class="required">*</span>
+                    </div>
+                    <div class="form-group col-lg-9  exportScoreCardDrdn">
+                        <input type="file" id="updateStatusFile" />
+                        <span id="updateStatusFileError" class="display-none text-danger">
+                            Please select file
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="camodalrd-footer text-right pt-0 pr-4 ">
+                <button onclick="updateAdmissionUserStatus()" class="btn btn-primary darkbtn  float-right mr-0">Save</button>&nbsp;&nbsp;
+                <a href="javascript:void(0)" onclick="hideModel('actionModal')" class="btn btn-outline-primary lightBtn">Close</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/admission.js"></script>
+}

@@ -1,0 +1,12 @@
+﻿@inject IConfiguration _configuration;
+
+@{
+    ViewBag.Title = "Verticals";
+}
+
+<div class="content-wrapper">
+    <iframe src="@_configuration.GetSection("WebsiteBaseUrl").Value/Hangfire"></iframe>
+</div>
+
+@section Scripts {
+}

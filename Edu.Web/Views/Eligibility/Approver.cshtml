@@ -1,0 +1,110 @@
+﻿@inject Edu.Service.Interfaces.IUserProviderService userProviderService
+@{
+    ViewData["Title"] = "Eligibilities";
+}
+
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row intakeRow">
+                <div class="col-md-1">
+                    <label class="heading">Scheme: </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown schmeDropdown">
+                    @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                </div>
+                <div class="col-md-2" style="max-width: 130px;">
+                    <label class="heading">Financial Year : </label>
+                </div>
+                <div class="col-md-4 selectschme headingDropdown financialDropdown">
+
+                    @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "filterTable();" }))
+                </div>
+                <br />
+                <br />
+                <br />
+            </div>
+
+
+            <div class="row g-3 list-content">
+                <div class="col-lg-9 ">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-6 mt-2 pl-2">
+                            @Html.DropDownList("designationId", (List<SelectListItem>)ViewBag.Designations, (new { @class = "form-control select2 dropdownClass", }))
+                        </div>
+                        <div class="col-lg-2 col-md-6 mt-2">
+                            @Html.DropDownList("divisionId", (List<SelectListItem>)ViewBag.Divisions, (new { @class = "form-control select2 dropdownClass", }))
+                        </div>
+                        <div class="col-lg-2 col-md-6 mt-2">
+                            @Html.DropDownList("departmentId", (List<SelectListItem>)ViewBag.Departments, (new { @class = "form-control select2 dropdownClass", }))
+                        </div>
+                        <div class="col-lg-2 col-md-6 mt-2 locationDropdown">
+                            @Html.DropDownList("locationId", (List<SelectListItem>)ViewBag.Locations, (new { @class = "form-control select2 dropdownClass", }))
+                        </div>
+
+                        <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                            <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                            <input type="text" class="form-control date-picker search-date" placeholder="Start Date" id="startDate" />
+                        </div>
+                        <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                            <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                            <input type="text" class="form-control date-picker search-date" placeholder="End Date" id="endDate" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-2 text-right ">
+                    <button id="btnFilterClear" class="btn btn-secondary clearBtn"> <img src="~/assets/img/reset.svg" /> Reset</button>
+                    <button id="btnFilter" class="btn btn-outline-primary lightBtn">Apply Filters</button>&nbsp;
+                </div>
+            </div>
+
+            <div class="row g-3 list-content eligibilityTableTop mt-3">
+                <div class="col col-md-12 mt-2 tabletop d-flex">
+                    <div class="col-3 searchBarspanintake d-flex align-items-center pl-2">
+                        <img src="~/assets/img/search.svg" />
+                        <input class="searchBar" type="text" placeholder="Search" id="searchValue" />
+                    </div>
+                    <button style="border:none;  background:transparent"><img src="~/assets/img/select.svg" /></button>
+                    <button id="btn-excel-export" type="button" class="btn btn-outline-primary lightBtn"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>&nbsp;
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content list-content mt-3">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 eligibilityTablepage pr-0">
+                    <div>
+                        <div class=" card-primary  eligibilitytablegts">
+                            <div class="card-body  p-0">
+                                <table id="eligibilityDatatable" class="eligibilitytable table datatable mt-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Verticals</th>
+                                            <th>Staff No.</th>
+                                            <th>Staff Name</th>
+                                            <th>Intake Start Date</th>
+                                            <th>DOJ</th>
+                                            <th>MSIL<br />Tenure</th>
+                                            <th>DESG</th>
+                                            <th>Relevant Previous  Exp</th>
+                                            <th>DIVN</th>
+                                            <th>DEPT</th>
+                                            <th>Location</th>
+                                            <th>Publish</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/apreligibility.js"></script>
+}

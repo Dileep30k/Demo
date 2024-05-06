@@ -1,0 +1,48 @@
+@using HtmlHelpers.BeginCollectionItemCore;
+@model List<IntakeInstituteModel>
+
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var institute in Model)
+        {
+            <div class="col-md-6">
+                <table class="table table-bordered instituteterms">
+                    <tr><td>Institute Name</td><td>@institute.InstituteName</td></tr>
+                    <tr><td>Course Name</td><td>@institute.SchemeName</td></tr>
+                    <tr><td>No. of Seats</td><td>@institute.TotalSeats</td></tr>
+                    <tr>
+                        <td>Eligibility Criteria</td>
+                        <td>
+                            <ol type="1" class="pl-3">
+                                <li>
+                                    The applicants must have 50%
+                                    marks or equivalent CGPA in both
+                                    class X and XII board exams
+                                </li>
+                                <li>
+                                    The Applicants must have minimum
+                                    3-year Bachelor Degree, with at least
+                                    50% marks or equivalent CGPA in
+                                    any discipline from any University,
+                                    recognized by the Ministry of HRD,
+                                    Government of India.
+                                </li>
+                                <li>
+                                    Minimum post-qualification work
+                                    experience:- 3 years as on 30th April
+                                    2023
+                                </li>
+                            </ol>
+                        </td>
+                    </tr>
+                    <tr><td>Last Date for submitting approved nomination form</td><td>@institute.NominationCutoffDate.ToString("dd MMM, yyyy")</td></tr>
+                    <tr><td>Last Date for registration and payment for MAT Exam</td><td>@institute.NominationCutoffDate.ToString("dd MMM, yyyy")</td></tr>
+                    <tr><td>Exam Date</td><td>@institute.ExamDate.ToString("dd MMM, yyyy (dddd)")</td></tr>
+                    <tr><td>Interview Date</td><td>@institute.ExamDate.ToString("MMMM") (date will be shared)</td></tr>
+                    <tr><td>Commencement of classes</td><td>@institute.StartDate.ToString("MMMM, yyyy")</td></tr>
+                </table>
+            </div>
+        }
+    </div>
+}

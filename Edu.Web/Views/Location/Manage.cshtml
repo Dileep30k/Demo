@@ -1,0 +1,55 @@
+@model Edu.Abstraction.Models.Location
+
+@{
+    ViewData["Title"] = (Model.LocationId > 0) ? $"Edit Location - {Model.LocationName}" : "Create New Location";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">@(Model.LocationId > 0 ? $"Edit Location - {Model.LocationName}" : "Create New Location")</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-outline-primary float-sm-right" asp-area="" asp-controller="Location" asp-action="Index" onclick="showLoading();">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+
+            <form id="locationForm" enctype="multipart/form-data" class="form-horizontal form-bordered" asp-action="Manage" asp-controller="Location">
+                <section class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <input asp-for="LocationId" type="hidden" id="LocationId">
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="LocationName">Location Name<span class="required">*</span></label>
+                                            <input maxlength="100" asp-for="LocationName" type="text" id="LocationName" class="form-control">
+                                            <span asp-validation-for="LocationName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="Location" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                                <input type="submit" value="Save" class="btn btn-success float-right" onclick="return validateLocation();">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/location.js"></script>
+}

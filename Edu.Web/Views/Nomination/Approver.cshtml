@@ -1,0 +1,172 @@
+﻿@{
+    ViewData["Title"] = "Nominations";
+}
+
+<div class="content-wrapper">
+    <div class="content-header pr-1">
+        <div class="container pr-0">
+            <div class="row g-3 intakeRow">
+                <div class="col-md-1">
+                    <label class="heading">Scheme: </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown schmeDropdown">
+                    @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                </div>
+                <div class="col-md-3 d-none" style="max-width: 130px !important;">
+                    <label class="heading">Financial Year : </label>
+                </div>
+                <div class="col-md-4 selectschme headingDropdown financialDropdown d-none" > 
+                    @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "filterTable();"  }))
+                </div>
+
+                <br />
+                <br />
+                <br />
+            </div>
+            <div class="row g-3 mt-3 ">
+                <div class="col-lg-2 col-md-6 mt-2">
+                    @Html.DropDownList("divisionId", (List<SelectListItem>)ViewBag.Divisions, (new { @class = "form-control select2 dropdownClass", }))
+                </div>
+                <div class="col-lg-2 col-md-6 mt-2">
+                    @Html.DropDownList("departmentId", (List<SelectListItem>)ViewBag.Departments, (new { @class = "form-control select2 dropdownClass", }))
+                </div>
+                <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                    <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                    <input type="text" class="form-control date-picker search-date" placeholder="Start Date" id="startDate" />
+                </div>
+                <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                    <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                    <input type="text" class="form-control date-picker search-date" placeholder="End Date" id="endDate" />
+                </div>
+                <div class="col-lg-4 col-md-3 mt-2 text-right">
+                    <button id="btnFilterClear" class="btn btn-secondary clearBtn"> <img src="~/assets/img/reset.svg" /> Reset</button>
+                    <button id="btnFilter" class="btn btn-outline-primary lightBtn mr-0">Apply Filters</button>&nbsp;
+                    <br />
+                </div>
+            </div>
+            <div class="row g-3 mt-3 ">
+                <div class="col-lg-3 col-md-3 ">
+                    <button id="btn-excel-export" type="button" class="btn ml-0 btn-outline-primary lightBtn"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>&nbsp;
+                </div>
+                <div class="col-lg-9 col-md-3  text-right">
+                    <button id="btnApprove" onclick="onApprove()" class="btn btn-success">Approve</button>&nbsp;&nbsp;
+                    <button id="btnReview" onclick="onReview()" class="btn btn-warning">Review</button>&nbsp;&nbsp;
+                    <button id="btnReject" onclick="onReject()" class="btn btn-danger">Reject</button>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content mt-2">
+        <div class="container pr-0">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class=" card-primary ">
+                        <div class="card-body   p-0 approverNomination">
+                            <table id="nominationDatatable" class="table datatable tableDiv">
+                                <thead>
+                                    <tr>
+                                        <th class="no-sort"><input id="chk-all" type="checkbox" class="select-all" onclick="selectAll(this);" /></th>
+                                        <th>Staff No.</th>
+                                        <th>Staff Name</th>
+                                        <th>Course</th>
+                                        <th class="no-sort">Nomination Applied for</th>
+                                        <th>Staff Email Id</th>
+                                        <th>Staff Mobile No.</th>
+                                        <th>DOJ</th>
+                                        <th>MSIL<br />Tenure</th>
+                                        <th>DEPT</th>
+                                        <th>DIVN</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade approverNomi" id="approvalModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered  justify-content-center ">
+        <div class="modal-content " style="height:auto !important">
+            <div class="modal-header justify-content-center titleaprrover pt-4 pb-4">
+                <h5 class="modal-title">Are you sure you want to approve nominations?</h5>
+            </div>
+            <div class="modal-body text-center p-0">
+                <div class="pb-1">
+                    <button type="button" class="btn btn-success" onclick="updateNomination(1, 'approvalModal')">YES, APPROVE SELECTED NOMINATION</button>
+                </div>
+                <div>
+                    <a href="javascript:void(0)" onclick="hideModel('approvalModal')" class="btn btn-outline-primary" style="padding: 7px 17px;">NO, I DON'T WANT TO APPROVE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade nominationReview" id="reviewModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered justify-content-center" style="width: 406px !important ;">
+        <div class="modal-content">
+            <div class="modal-header titleaprrover justify-content-center">
+                <h5 class="modal-title">Are you sure you want to review nomination?</h5>
+            </div>
+            <div class="modal-body text-center">
+                <div>
+                    <div class="row">
+                        <div class="form-group col-12  d-flex justify-content-start mb-0">
+                            <label for="remarkReview">Remarks <span class="required">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-12">
+                            <textarea type="text" id="remarkReview" class="form-control" placeholder="Please enter remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-warning" onclick="updateNomination(2, 'reviewModal')">YES, REVIEW NOMINATION</button>
+                </div>
+                <div>
+                    <a href="javascript:void(0)" onclick="hideModel('reviewModal')" class="btn btn-outline-primary">NO, I DON'T WANT TO REVIEW</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade rejectNomi" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered  justify-content-center " style="width: 406px !important;">
+        <div class="modal-content">
+            <div class="modal-header titleaprrover  justify-content-center">
+                <h5 class="modal-title">Are you sure you want to reject nomination?</h5>
+            </div>
+            <div class="modal-body text-center">
+                <div>
+                    <div class="row">
+                        <div class="form-group col-12 d-flex justify-content-start mb-0">
+                            <label for="remarkReject">Remarks <span class="required">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <textarea type="text" id="remarkReject" class="form-control" placeholder="Please enter remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-danger" onclick="updateNomination(3, 'rejectModal')">YES, REJECT NOMINATION</button>
+                </div>
+                <div>
+                    <a href="javascript:void(0)" onclick="hideModel('rejectModal')" class="btn btn-outline-primary">NO, I DON'T WANT TO REJECT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/aprnomination.js"></script>
+}

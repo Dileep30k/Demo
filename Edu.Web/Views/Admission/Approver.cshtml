@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "Admissions";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row g-3 intakeRow">
+                <div class="col-md-1">
+                    <label class="heading">Scheme: </label>
+                </div>
+                <div class="col-md-2 selectschme headingDropdown schmeDropdown">
+                    @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                </div>
+                <div class="col-md-2" style="max-width: 130px !important;">
+                    <label class="heading">Financial Year : </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown financialDropdown">
+                    @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "getIntakeInstitutes(this);"  }))
+                </div>
+                <div class="col-md-1">
+                    <label class="heading">Institute : </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown intakeDropdown">
+                    @Html.DropDownList("instituteId", (List<SelectListItem>)ViewBag.Institutes, (new { @class = "form-control select2 dropdownClass", onchange = "getAdmission(this);"  }))
+                </div>
+                <br />
+                <br />
+                <br />
+            </div>
+        </div>
+    </div>
+    <div id="uploadTitle" class="font-16 font-bold headingFont">
+    </div>
+    <div class="content grid-content mt-3 display-none">
+        <div class="container">
+            <div class="row btnRows">
+                <div class="col-lg-6">
+                    <button id="btn-excel-export" type="button" class="btn ml-0 btn-outline-primary lightBtn"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>&nbsp;
+                </div>
+                <div class="col-lg-6 text-right buttons-div">
+                    <button id="btnApprove" onclick="displayModel('approvalModal')" class="btn btn-success">Approve</button>&nbsp;&nbsp;
+                    <button id="btnReject" onclick="displayModel('rejectModal')" class="btn btn-danger">Reject</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 eligibilityTablepage pr-0">
+                    <div>
+                        <div class=" card-primary  eligibilitytablegts">
+                            <div class="card-body  p-0">
+                                <table id="admissionDatatable" class="eligibilitytable table datatable mt-0">
+                                    <thead>
+                                        <tr>
+                                            <th>Rank</th>
+                                            <th class="th.sorting">Staff No.</th>
+                                            <th>Staff Name</th>
+                                            <th>Staff Email</th>
+                                            <th>Staff Mobile No.</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade approverNomi" id="approvalModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered  justify-content-center ">
+        <div class="modal-content" style="height:auto !important">
+            <div class="modal-header justify-content-center titleaprrover pt-4 pb-4">
+                <h5 class="modal-title">Are you sure you want to approve all admissions?</h5>
+            </div>
+            <div class="modal-body text-center p-0">
+                <div class="pb-1">
+                    <button type="button" class="btn btn-success" onclick="updateAdmissions(true, 'approvalModal')">YES, APPROVE ALL ADMISSIONS</button>
+                </div>
+                <div>
+                    <a href="javascript:void(0)" onclick="hideModel('approvalModal')" style="padding: 7px 13px;" class="btn btn-outline-primary">NO, I DON'T WANT TO APPROVE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade  rejectAdd" id="rejectModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered  justify-content-center " style="width: 406px !important;">
+        <div class="modal-content">
+            <div class="modal-header titleaprrover  justify-content-center">
+                <h5 class="modal-title">Are you sure you want to reject admission?</h5>
+            </div>
+            <div class="modal-body text-center">
+                <div>
+                    <div class="row">
+                        <div class="form-group col-12 d-flex justify-content-start mb-0">
+                            <label for="remarkReject">Remarks <span class="required">*</span></label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <textarea type="text" id="remarkReject" class="form-control" placeholder="Please enter remarks"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <button type="button" class="btn btn-danger" onclick="updateAdmissions(false, 'rejectModal')">YES, REJECT ADMISSION</button>
+                </div>
+                <div>
+                    <a href="javascript:void(0)" onclick="hideModel('rejectModal')"  class="btn btn-outline-primary">NO, I DON'T WANT TO REJECT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script src="~/js/apradmission.js"></script>
+}

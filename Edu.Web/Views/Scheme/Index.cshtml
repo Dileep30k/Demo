@@ -1,0 +1,67 @@
+@{
+    ViewBag.Title = "Schemes";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6  mainPageHeading">
+                    <br />
+                    <h1 class="m-0 innerHeading"> Schemes</h1>
+                </div>
+                <div class="col-sm-6">
+                    <br />
+                    <a class="btn btn-primary darkbtn float-sm-right" asp-area="" asp-controller="Scheme" asp-action="Manage" onclick="showLoading();"><img src="~/assets/img/plus_white.svg" /> &nbsp Add New Scheme</a>
+                </div>
+            </div>
+            <div class="row g-3  align-items-center ">
+                <div class="col-lg-4 col-md-12 mt-2 pr-0">
+                    <span class="searchBarspan d-flex  align-items-center col-11">
+                        <img src="~/assets/img/search.svg" />
+                        <input class="searchBar searchintake pl-1" type="text" placeholder="Search" id="searchValue" />
+                    </span>
+                </div>
+                <div class="col-lg-2 col-md-6 mt-2 selectschme schemeDropdown ">
+                    @Html.DropDownList("instituteId", (List<SelectListItem>)ViewBag.Institutes, (new { @class = "form-control select2 dropdownClass" }))
+                </div>
+                <div class=" col-md-3 mt-2 schemeBtns">
+                    <button id="btn-excel-export" type="button" class="btn btn-outline-primary lightBtn exportBtn"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>&nbsp;
+                </div>
+                <div class="col-lg-3 col-md-6 mt-2 text-right schemeBtns ">
+                    <button id="btnFilterClear" class="btn btn-secondary clearBtn"> <img src="~/assets/img/reset.svg" /> Reset</button>
+                    <button id="btnFilter" class="btn btn-outline-primary lightBtn">Apply Filters</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <section class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class=" card-primary">
+                        <div class="card-body  p-0">
+                            <table id="schemeDatatable" class="table datatable table-striped tableDiv">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Scheme Name</th>
+                                        <th>Scheme Code</th>
+                                        <th class="no-sort">Duration</th>
+                                        <th class="no-sort">Institutes</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/scheme.js"></script>
+}

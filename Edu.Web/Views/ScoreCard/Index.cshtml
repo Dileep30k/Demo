@@ -1,0 +1,165 @@
+﻿@{
+    ViewData["Title"] = "Scorecards";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row g-3 intakeRow">
+                <div class="col-md-1">
+                    <label class="heading">Scheme: </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown schmeDropdown">
+                    @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                </div>
+                <div class="col-md-2" style="max-width: 130px !important;">
+                    <label class="heading">Financial Year : </label>
+                </div>
+                <div class="col-md-4 selectschme headingDropdown financialDropdown ">
+                    @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "filterTable();"  }))
+                </div>
+            </div>
+            <div class="row g-3 mt-3">
+                <div class="col col-md-12 mt-2 tabletop d-flex">
+                    <div class="col-3 searchBarspanintake d-flex align-items-center pl-2">
+                        <img src="~/assets/img/search.svg" />
+                        <input class="searchBar searchintake pl-1" type="text" placeholder="Search" id="searchValue" />
+                    </div>
+                    <button style="border:none;  background:transparent"><img src="~/assets/img/select.svg" /></button>
+                    <div class="col col-2 scoreCustomDrpd">
+                        @Html.DropDownList("isScoreApprove", (List<SelectListItem>)ViewBag.ScoreAppoves, (new { @class = "form-control select2 dropdownClass", onchange = "filterTable();"  }))
+                    </div>
+                    <button type="button" class="btn btn-outline-primary lightBtn" onclick="exportInstitute()"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>&nbsp;
+                    <button type="button" class="btn btn-outline-primary lightBtn" onclick="downloadAllScoreCard()"> <img src="~/assets/img/download_invoice.svg" /> Download All Scorecards</button>&nbsp;
+                    <button id="btn-upload-scorecard" type="button" class="btn btn-outline-primary lightBtn display-none" onclick="onUploadScorecard()"> <img src="~/assets/img/upload.svg" /> Upload Score Card</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="content mt-3" id="grid-container">
+        <div class="container pr-0">
+            <div class="row">
+                <div class="col-lg-12 scoreCardTable">
+                    <div>
+                        <div class=" card-primary  ">
+                            <div class="card-body  p-0  ">
+                                <table id="scorecardDatatable" class="table datatable scoretable   ">
+                                    <thead>
+                                        <tr>
+                                            <th class="no-sort">Verticals</th>
+                                            <th class="no-sort staff">Staff No.</th>
+                                            <th class="no-sort">Staff Name</th>
+                                            <th class="no-sort">Staff Email Id</th>
+                                            <th class="no-sort">Staff Mobile No.</th>
+                                            <th class="no-sort">Nomination<br />selected for</th>
+                                            <th class="no-sort">Exam Date</th>
+                                            <th class="no-sort">Total Exam<br />Percentile</th>
+                                            <th class="no-sort ">Scorecard file</th>
+                                            <th class="no-sort notexport">Actions</th>
+                                            <th class="no-sort notexport">Approval</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="exportModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered justify-content-center modal-sm">
+        <div class="modal-content" style="width:83%">
+            <div class="modal-header color-3a pr-4 pl-4 ">
+                <h5 class="modal-title">Export Score sheet to excel</h5>
+            </div>
+            <div class="modal-body text-center pr-4 pl-4 pb-4">
+                <div class="row align-items-center pb-3 ">
+                    <div class="form-group col-lg-2 color-3a headerScoreCardExport">
+                        Institute
+                    </div>
+                    <div class="form-group col-lg-9 ml-4 exportScoreCardDrdn">
+                        @Html.DropDownList("instituteId", new List<SelectListItem>(), (new { @class = "form-control select2 dropdownClass", onchange = "filterInsituteTable(this);" }))
+                    </div>
+                </div>
+                <table id="scorecardInstituteDatatable" class="table datatable scoretable display-none">
+                    <thead>
+                        <tr>
+                            <th class="no-sort">Verticals</th>
+                            <th class="no-sort staff">Staff No.</th>
+                            <th class="no-sort">Staff Name</th>
+                            <th class="no-sort">Staff Email Id</th>
+                            <th class="no-sort">Staff Mobile No.</th>
+                            <th class="no-sort">Nomination<br />selected for</th>
+                            <th class="no-sort">Exam Date</th>
+                            <th class="no-sort">Total Exam<br />Percentile</th>
+                            <th class="no-sort ">Scorecard file</th>
+                            <th class="no-sort notexport">Actions</th>
+                            <th class="no-sort notexport">Approval</th>
+                        </tr>
+                    </thead>
+                </table>
+                <div class="pb-2">
+                    <input type="button" value="Export to Excel" class="btn darkbtn  float-right" onclick="exportInstituteExcel()">
+                    <a href="javascript:void(0)" class="btn btn-outline-primary float-right" onclick="hideModel('exportModal')">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="uploadModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered justify-content-center modal-sm">
+        <div class="modal-content" style="width:83%">
+            <div class="modal-header color-3a pr-4 pl-4 ">
+                <h5 class="modal-title">Upload Scorecards</h5>
+            </div>
+            <div class="modal-body text-center pr-4 pl-4 pb-4">
+                <div class="row align-items-center pb-3 ">
+                    <div class="form-group col-lg-12 color-3a headerScoreCardExport text-right">
+                        <a href="~/Samples/Scorecards.xlsx" class="dwnloadTemplt">
+                            Download Template
+                        </a>
+                    </div>
+                </div>
+                <div class="row align-items-center pb-3 ">
+                    <div class="form-group col-lg-2 color-3a headerScoreCardExport">
+                        Scorecard <span class="required">*</span>
+                    </div>
+                    <div class="form-group col-lg-9 ml-4 exportScoreCardDrdn">
+                        <input type="file" id="file-upload-scorecard" />
+                        <span id="file-upload-scorecard-error" class="text-danger">
+
+                        </span>
+
+                    </div>
+                </div>
+                <div class="row align-items-center pb-3 ">
+                    <div class="form-group col-lg-2 color-3a headerScoreCardExport">
+                        Documents <span class="required">*</span>
+                    </div>
+                    <div class="form-group col-lg-9 ml-4 exportScoreCardDrdn">
+                        <input type="file" id="file-upload-documents" />
+                        <span id="file-upload-documents-error" class="text-danger">
+
+                        </span>
+                    </div>
+                </div>
+                <div id="uploadError" class="row error-details">
+                </div>
+                <div class="pb-2">
+                    <input type="button" value="Upload" class="btn darkbtn  float-right" onclick="uploadScorecards()">
+                    <a href="javascript:void(0)" class="btn btn-outline-primary float-right" onclick="hideModel('uploadModal')">Cancel</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/scorecard.js"></script>
+    }

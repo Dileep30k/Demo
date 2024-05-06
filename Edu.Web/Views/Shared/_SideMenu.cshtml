@@ -1,0 +1,299 @@
+﻿@using Edu.Abstraction.Enums;
+@using Core.Utility.Utils;
+@inject Edu.Service.Interfaces.IUserProviderService userProviderService
+
+<aside id="sidebar" class="sidebar">
+    <a id="dashboard-link" asp-controller="Dashboard" asp-action="Index" class="logo">
+        <img src="~/assets/img/marutiLogo.png" alt="Higher Education System" class="loginLogo">
+    </a>
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+
+        @if (userProviderService.UserClaim.IsAdmin)
+        {
+            <label class="sidemenuHeading">ADMIN MENU</label>
+
+            <li class="nav-item " id="dashboardAdmin">
+                <a asp-action="Index" asp-controller="Dashboard" class="nav-link  @(Html.IsSelected("Dashboard", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " style="    margin-left: -2px;" />
+                    <span class="sidebarname" style="margin-left: -13px">Dashboard</span>
+                    <span class="sidebarname2" style="margin-left: -46px;">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="nav-item" id="documentTypeAdmin">
+                <a asp-action="Index" asp-controller="DocumentType" class="nav-link @(Html.IsSelected("DocumentType", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname">Document Types</span>
+                    <span class="sidebarname2" style="margin-left: -75px !important">Document Types</span>
+                </a>
+            </li>
+            <li class="nav-item" id="userAdmin">
+                <a asp-action="Index" asp-controller="User" class="nav-link @(Html.IsSelected("User", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname" style="margin-left: -11px;">Users</span>
+                    <span class="sidebarname2" style="margin-left: -16px;">Users</span>
+                </a>
+            </li>
+            <li class="nav-item" id="roleAdmin">
+                <a asp-action="Index" asp-controller="Role" class="nav-link @(Html.IsSelected("Role", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname">Roles</span>
+                    <span class="sidebarname2" style="margin-left: -16px;">Roles</span>
+                </a>
+            </li>
+            <li class="nav-item" id="designationAdmin">
+                <a asp-action="Index" asp-controller="Designation" class="nav-link @(Html.IsSelected("Designation", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname">Designations</span>
+                    <span class="sidebarname2" style="margin-left: -55px;">Designations</span>
+                </a>
+            </li>
+            <li class="nav-item" id="verticalAdmin">
+                <a asp-action="Index" asp-controller="Vertical" class="nav-link @(Html.IsSelected("Vertical", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname" style="margin-left: -10px;">Verticals</span>
+                    <span class="sidebarname2" style="margin-left: -33px;">Verticals</span>
+                </a>
+            </li>
+            <li class="nav-item" id="divisionAdmin">
+                <a asp-action="Index" asp-controller="Division" class="nav-link @(Html.IsSelected("Division", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname">Divisions</span>
+                    <span class="sidebarname2" style="margin-left: -34px;">Divisions</span>
+                </a>
+            </li>
+            <li class="nav-item" id="departmentAdmin">
+                <a asp-action="Index" asp-controller="Department" class="nav-link @(Html.IsSelected("Department", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname">Departments</span>
+                    <span class="sidebarname2" style="margin-left: -55px;">Departments</span>
+                </a>
+            </li>
+            <li class="nav-item" id="locationAdmin">
+                <a asp-action="Index" asp-controller="Location" class="nav-link @(Html.IsSelected("Location", "Index"))">
+                    <img src="~/assets/img/dashboard.svg" class="img1 " />
+                    <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                    <span class="sidebarname">Locations</span>
+                    <span class="sidebarname2" style="margin-left: -38px;">Locations</span>
+                </a>
+            </li>
+            <li id="schedularAdmin">
+                <a asp-action="Index" asp-controller="Schedular" class="nav-link @(Html.IsSelected("Schedular", "Index"))">
+                    <img src="~/assets/img/template.svg" class="img1 " />
+                    <img src="~/assets/img/template_selected.svg" class="img2 " />
+                    <span class="sidebarname" style="margin-left: -6px;">Schedular</span>
+                    <span class="sidebarname2">Schedular</span>
+                </a>
+
+            </li>
+        }
+        @* else *@
+        @{
+            if (userProviderService.UserClaim.IsGts)
+            {
+                <label class="sidemenuHeading">GTS MENU</label>
+
+                <li class="nav-item ">
+                    <a asp-action="Index" asp-controller="Dashboard" class="nav-link  @(Html.IsSelected("Dashboard", "Index"))">
+                        <img src="~/assets/img/dashboard.svg" class="img1 " />
+                        <img src="~/assets/img/dashboard_selected.svg" class="img2 " style="    margin-left: -2px;" />
+                        <span class="sidebarname" style="margin-left: -13px">Dashboard</span>
+                        <span class="sidebarname2" style="margin-left: -46px;">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Eligibility" class="nav-link @(Html.IsSelected("Eligibility", "Index"))" id="eligibiltiyGts">
+                        <img src="~/assets/img/eligibility.svg" class="img1 " />
+                        <img src="~/assets/img/eligibilty_selected.svg" class="img2 " style="    margin-left: -3px;" />
+                        <span class="sidebarname" style="margin-left: -18px;">Eligibility List</span>
+                        <span class="sidebarname2" style="margin-left: -58px;">Eligibility List</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Nomination" class="nav-link @(Html.IsSelected("Nomination", "Index"))" id="nominationGts">
+                        <img src="~/assets/img/nominations.svg" class="img1 " />
+                        <img src="~/assets/img/nomination_selected.svg" class="img2 " style="margin-left: -4px;" />
+                        <span class="sidebarname" style="margin-left: -13px">Nominations</span>
+                        <span class="sidebarname2" style="margin-left: -54px">Nominations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Scorecard" class="nav-link @(Html.IsSelected("Scorecard", "Index"))" id="scorecardGts">
+                        <img src="~/assets/img/scorecard.svg" class="img1 " />
+                        <img src="~/assets/img/scorecard_selected.svg" class="img2 " style="margin-left: -2px;" />
+                        <span class="sidebarname" style="margin-left: -13px">Score Card</span>
+                        <span class="sidebarname2" style="margin-left: -46px">Score Card</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Admission" class="nav-link @(Html.IsSelected("Admission", "Index"))" id="admissionGts">
+                        <img src="~/assets/img/admissions.svg" class="img1 " style="margin-left:-29px" />
+                        <img src="~/assets/img/admissions_selected.svg" class="img2 " style="margin-left: -7px;" />
+                        <span class="sidebarname" style="margin-left: -12px">Admissions</span>
+                        <span class="sidebarname2" style="margin-left: -53px">Admissions</span>
+                    </a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a id="paymentMenu" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="paymentGts" class="nav-link  @(Html.IsSelected("Payment")) dropdown-toggle">
+
+                        <img src="~/assets/img/payments.svg" class="img1 " />
+                        <img src="~/assets/img/payments_selected.svg" class="img2 " />
+                        <span class="sidebarname" style="margin-left: -11px;">Payments</span>
+                        <span class="sidebarname2">Payments</span>
+                    </a>
+                    <ul aria-labelledby="paymentMenu" class="dropdown-menu border-0 shadow paymentDropdown" style="left: 0px; right: inherit;">
+                        <li>
+                            <a asp-action="Index" asp-controller="Payment" class="dropdown-item nav-link @(Html.IsSelected("Payment", "Index"))">
+                                <img src="~/assets/img/dashboard.svg" class="img1 " />
+                                <img src="~/assets/img/dashboard_selected.svg" class="img2 " />
+                                <span class="sidebarname">Dashboard</span>
+                                <span class="sidebarname2">Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Invoice" asp-controller="Payment" class="dropdown-item nav-link @(Html.IsSelected("Payment", "Invoice"))">
+                                <img src="~/assets/img/invoice.svg" class="img1 " />
+                                <img src="~/assets/img/invoice_selected.svg" class="img2 " />
+                                <span class="sidebarname">Invoice</span>
+                                <span class="sidebarname2">Invoice</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a asp-action="Schedule" asp-controller="Payment" class="dropdown-item nav-link @(Html.IsSelected("Payment", "Schedule"))">
+                                <img src="~/assets/img/payments_schedule.svg" class="img1 " />
+                                <img src="~/assets/img/payment_schedule_selected.svg" class="img2 " />
+                                <span class="sidebarname">Payment Schedule</span>
+                                <span class="sidebarname2">Payment Schedule</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <p class="sidemenuHeading">SETTINGS</p>
+                <li>
+                    <a asp-action="Index" asp-controller="Intake" class="nav-link @(Html.IsSelected("Intake", "Index"))">
+                        <img src="~/assets/img/admissions_in_fy.svg" class="img1 " />
+                        <img src="~/assets/img/admissions_in_fy_selected.svg" class="img2" style="margin-left: -5px;" />
+                        <span class="sidebarname" style="margin-left: -13px;">Admissions in FY</span>
+                        <span class="sidebarname2" style="margin-left:-80px">Admissions in FY</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-action="Index" asp-controller="Scheme" class="nav-link @(Html.IsSelected("Scheme", "Index"))">
+                        <img src="~/assets/img/schemes.svg" class="img1 " />
+                        <img src="~/assets/img/scheme_selected.svg" class="img2 " />
+                        <span class="sidebarname" style="margin-left:-10px">Schemes</span>
+                        <span class="sidebarname2" style="margin-left:-38px">Schemes</span>
+                    </a>
+                </li>
+                <li>
+                    <a asp-action="Index" asp-controller="Institute" class="nav-link @(Html.IsSelected("Institute", "Index"))">
+                        <img src="~/assets/img/institutes.svg" class="img1 " />
+                        <img src="~/assets/img/institutes_selected.svg" class="img2 " style="margin-left: -5px;margin-top: 6px;" />
+                        <span class="sidebarname" style="margin-left: -21px;">Institutes</span>
+                        <span class="sidebarname2" style="margin-left: -35px;">Institutes</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a asp-action="Index" asp-controller="Template" class="nav-link @(Html.IsSelected("Template", "Index"))">
+                        <img src="~/assets/img/template.svg" class="img1 " />
+                        <img src="~/assets/img/template_selected.svg" class="img2 " />
+                        <span class="sidebarname" style="margin-left: -12px;">Templates</span>
+                        <span class="sidebarname2">Templates</span>
+                    </a>
+
+                </li>
+
+                <li>
+                    <a asp-action="Index" asp-controller="Schedular" class="nav-link @(Html.IsSelected("Schedular", "Index"))">
+                        <img src="~/assets/img/template.svg" class="img1 " />
+                        <img src="~/assets/img/template_selected.svg" class="img2 " />
+                        <span class="sidebarname" style="margin-left: -12px;">Scheduler</span>
+                        <span class="sidebarname2">Schedular</span>
+                    </a>
+
+                </li>
+            }
+            if (userProviderService.UserClaim.IsEmployee)
+            {
+                <label class="sidemenuHeading">EMPLOYEE MENU</label>
+
+                <li class="nav-item ">
+                    <a asp-action="Employee" asp-controller="Dashboard" class="nav-link  @(Html.IsSelected("Dashboard", "Employee"))">
+                        <img src="~/assets/img/dashboard.svg" class="img1 " />
+                        <img src="~/assets/img/dashboard_selected.svg" class="img2 " style="    margin-left: -2px;" />
+                        <span class="sidebarname" style="margin-left: -13px">Dashboard</span>
+                        <span class="sidebarname2" style="margin-left: -46px;">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Employee" asp-controller="Nomination" class="nav-link @(Html.IsSelected("Nomination", "Employee"))">
+                        <img src="~/assets/img/nominations.svg" class="img1 dasdboardImg" />
+                        <img src="~/assets/img/nomination_selected.svg" class="img2 dasdboardImg" />
+                        <span class="sidebarname" style="margin: -14px">Nominations</span>
+                        <span class="sidebarname2" style="    margin-left: -40px;">Nominations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Employee" asp-controller="Scorecard" class="nav-link @(Html.IsSelected("Scorecard", "Employee"))">
+                        <img src="~/assets/img/scorecard.svg" class="img1 dasdboardImg" />
+                        <img src="~/assets/img/scorecard_selected.svg" class="img2 dasdboardImg" style="margin-left: -3px" />
+                        <span class="sidebarname" style="margin-left: -9px;">Scorecard</span>
+                        <span class="sidebarname2" style="margin-left: -43px;">Scorecard</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a asp-action="Employee" asp-controller="Admission" class="nav-link @(Html.IsSelected("Admission", "Employee"))">
+                        <img src="~/assets/img/admissions.svg" class="img1 " />
+                        <img src="~/assets/img/admissions_selected.svg" class="img2 " style="    margin-left: -6px;" />
+                        <span class="sidebarname" style="margin-left: -12px">Admissions</span>
+                        <span class="sidebarname2" style="margin-left: -50px">Admissions</span>
+                    </a>
+                </li>
+            }
+            if (userProviderService.UserClaim.IsApprover)
+            {
+                <label class="sidemenuHeading">APPROVER MENU</label>
+
+                <li class="nav-item">
+                    <a asp-action="Index" asp-controller="Eligibility" class="nav-link @(Html.IsSelected("Eligibility", "Approver"))">
+                        <img src="~/assets/img/eligibility.svg" class="img1 " />
+                        <img src="~/assets/img/eligibilty_selected.svg" class="img2 " style="    margin-left: -3px;" />
+                        <span class="sidebarname" style="margin-left: -16px;">Eligibility List</span>
+                        <span class="sidebarname2" style="    margin-left: -61px;">Eligibility List</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Approver" asp-controller="Nomination" class="nav-link @(Html.IsSelected("Nomination", "Approver"))">
+                        <img src="~/assets/img/nominations.svg" class="img1 dasdboardImg" />
+                        <img src="~/assets/img/nomination_selected.svg" class="img2 dasdboardImg" />
+                        <span class="sidebarname" style="margin-left: -15px;">Nominations</span>
+                        <span class="sidebarname2" style="    margin-left: -60px;">Nominations</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a asp-action="Approver" asp-controller="Admission" class="nav-link @(Html.IsSelected("Admission", "Approver"))">
+                        <img src="~/assets/img/admissions.svg" class="img1 " style="margin-left:-29px" />
+                        <img src="~/assets/img/admissions_selected.svg" class="img2 " style="margin-left: -6px;" />
+                        <span class="sidebarname" style="margin-left: -14px">Admissions</span>
+                        <span class="sidebarname2" style="margin-left: -49px">Admissions</span>
+                    </a>
+                </li>
+            }
+
+        }
+    </ul>
+
+</aside>
+<!-- End Sidebar-->

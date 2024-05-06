@@ -1,0 +1,173 @@
+@model Edu.Abstraction.Models.Institute
+
+@{
+    ViewData["Title"] = (Model.InstituteId > 0) ? $"Edit Institute - {Model.InstituteName}" : "Create New Institute";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <br />
+            <div class="row mb-2">
+                <div class="col-sm-12 d-flex">
+                    <div>
+                        <a class="backBtn" asp-area="" asp-controller="Institute" asp-action="Index" onclick="showLoading();"><img src="~/assets/img/back_arrow.svg" /></a>
+                    </div>
+                    <h1 class=" innerHeading">@(Model.InstituteId > 0 ? $"Edit Institute - {Model.InstituteName}" : "Add New Institute")</h1>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container settingForms  ">
+
+            <form id="instituteForm" enctype="multipart/form-data" class="form-horizontal form-bordered" asp-action="Manage" asp-controller="Institute">
+                <section class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class=" card-primary">
+                                <div class="card-body normalform ">
+                                    <input asp-for="InstituteId" type="hidden" id="InstituteId" placeholder="Institute Id">
+                                    <div class="row">
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="InstituteName">Institute Name<span class="required">*</span></label>
+                                            <input maxlength="100" asp-for="InstituteName" type="text" id="InstituteName" class="form-control" placeholder="Institute Name">
+                                           
+                                        </div>
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="InstituteCode">Institute Code<span class="required">*</span></label>
+                                            <input maxlength="50" asp-for="InstituteCode" type="text" id="InstituteCode" class="form-control" placeholder="Institute Code">
+                                           
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                                <span asp-validation-for="InstituteName" class="text-danger"></span>
+                                        </div>
+                                         <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                                <span asp-validation-for="InstituteCode" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="EmailAddress">Email</label>
+                                            <input maxlength="50" asp-for="EmailAddress" type="text" id="EmailAddress" class="form-control" placeholder="Email">
+                                         
+                                        </div>
+                                        <div class="form-group  col-6 d-flex align-items-center  pl-0">
+                                            <label class="w-100 col-4" for="ContactNo">Contact No</label>
+                                            <input maxlength="10" asp-for="ContactNo" type="text" id="ContactNo" class="form-control numberOnly" placeholder="Contact No.">
+                                          
+                                        </div>
+                                       
+                                    </div>
+                                     <div class="row">
+                                        <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                                  <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                                        </div>
+                                         <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                                <span asp-validation-for="ContactNo" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="ContactPerson">Contact Person</label>
+                                            <input maxlength="50" asp-for="ContactPerson" type="text" id="ContactPerson" class="form-control" placeholder="Contact Person">
+                                           
+                                        </div>
+                                        <div class="form-group col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="Address">Address</label>
+                                            <input maxlength="255" asp-for="Address" type="text" id="Address" class="form-control" placeholder="Address">
+                                           
+                                        </div>
+                                       
+                                    </div>
+                                     <div class="row">
+                                        <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                                 <span asp-validation-for="ContactPerson" class="text-danger"></span>
+                                        </div>
+                                         <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                               <span asp-validation-for="Address" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="Pincode">Pincode</label>
+                                            <input maxlength="6" asp-for="Pincode" type="text" id="Pincode" class="form-control numberOnly" placeholder="Pincode">
+                                           
+                                        </div>
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="City">City</label>
+                                            <input maxlength="50" asp-for="City" type="text" id="City" class="form-control" placeholder="City">
+                                          
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                            <span asp-validation-for="Pincode" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                            <span asp-validation-for="City" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="State">State</label>
+                                            <input maxlength="50" asp-for="State" type="text" id="State" class="form-control" placeholder="State">
+                                            
+                                        </div>
+                                        <div class="form-group  col-6 d-flex align-items-center pl-0">
+                                            <label class="w-100 col-4" for="Country">Country</label>
+                                            <input maxlength="50" asp-for="Country" type="text" id="Country" class="form-control" placeholder="Country">
+                                            
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="row">
+                                         <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                                 <span asp-validation-for="State" class="text-danger"></span>
+                                        </div>
+                                         <div class="form-group col-2 d-flex align-items-center">
+                                        </div>
+                                        <div class="form-group col-4 d-flex align-items-center">
+                                              <span asp-validation-for="Country" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer footerBtn">
+                                <input type="submit" value="Save" class="btn btn-primary darkbtn  float-right" onclick="return validateInstitute();">
+                                <a asp-controller="Institute" asp-action="Index" class="btn btn-outline-primary float-right">Cancel</a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/institute.js"></script>
+}

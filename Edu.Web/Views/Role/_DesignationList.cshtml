@@ -1,0 +1,27 @@
+@model List<Edu.Abstraction.ComplexModels.RoleDesignationModel>
+@if (Model.Any())
+{
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card card-primary">
+                <div class="card-body">
+                    <table id="categoryVariantDatatable" class="table datatable">
+                        <thead>
+                            <tr>
+                                <th>Designation </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        @foreach (var designation in Model)
+                        {
+                            <tr>
+                                <td>@designation.DesignationName</td>
+                                <td><a href="javascript:void(0)" onclick="removeDesignation(@designation.RoleDesignationId)"><i class="fas fa-trash"></i></a></td>
+                            </tr>
+                        }
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+}

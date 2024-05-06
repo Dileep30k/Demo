@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Nominations";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container pr-0">
+            <div class="row g-3 intakeRow">
+                <div class="col-md-1">
+                    <label class="heading">Scheme: </label>
+                </div>
+                <div class="col-md-2 selectschme headingDropdown schmeDropdown" style="max-width: 23%; flex: 0 0 23%;">
+                    @Html.DropDownList("schemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2 dropdownClass", onchange = "getSchemeIntakes(this);" }))
+                </div>
+                <div class="col-md-2" style="max-width: 130px !important;">
+                    <label class="heading">Financial Year : </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown financialDropdown ">
+                    @Html.DropDownList("intakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2 dropdownClass", onchange = "getIntakeInstitutes(this);"  }))
+                </div>
+                <div class="col-md-1">
+                    <label class="heading">Institute: </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown intakeDropdown">
+                    @Html.DropDownList("instituteId", (List<SelectListItem>)ViewBag.Institutes, (new { @class = "form-control select2 dropdownClass", onchange = "filterTable();"  }))
+                </div>
+
+                <br />
+                <br />
+                <br />
+            </div>
+            <div class="row g-3 ">
+                <div class="col-lg-9  ">
+                    <div class="row">
+                        <div class="col-lg-2 col-md-6 mt-2 pl-2">
+                            @Html.DropDownList("designationId", (List<SelectListItem>)ViewBag.Designations, (new { @class = "form-control select2 dropdownClass", }))
+                        </div>
+                        <div class="col-lg-2 col-md-6 mt-2">
+                            @Html.DropDownList("departmentId", (List<SelectListItem>)ViewBag.Departments, (new { @class = "form-control select2 dropdownClass", }))
+                        </div>
+                        <div class="col-lg-3 col-md-6 mt-2" style="flex: 0 0 25%;max-width: 20%;">
+                            @Html.DropDownList("nominationStatusId", (List<SelectListItem>)ViewBag.Statuses, (new { @class = "form-control select2 dropdownClass", }))
+                        </div>
+                        <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                            <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                            <input type="text" class="form-control date-picker search-date" placeholder="Start Date" id="startDate" />
+                        </div>
+                        <div class="col-lg-2 col-md-6 mt-2 inner-addon right-addon">
+                            <img class="calenderIconIndex glyphicon glyphicons-lock" src="~/assets/img/calender_icon_blue.svg" />
+                            <input type="text" class="form-control date-picker search-date" placeholder="End Date" id="endDate" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mt-2 text-right ">
+                    <button id="btnFilterClear" class="btn btn-secondary clearBtn"> <img src="~/assets/img/reset.svg" /> Reset</button>
+                    <button id="btnFilter" class="btn btn-outline-primary lightBtn">Apply Filters</button>&nbsp;
+                </div>
+            </div>
+
+
+            <div class=" d-flex mb-2 align-items-center tabletop mt-3">
+                <div class="col col-md-12 mt-2 d-flex pl-0 align-items-center">
+                    <div class="searchBarspanintake d-flex align-items-center pl-2 col-md-3">
+                        <img src="~/assets/img/search.svg" />
+                        <input class="searchBar" type="text" placeholder="Search" id="searchValue" />
+                    </div>
+                    <div>
+                        <button style="border:none;  background:transparent" class="p-0"><img src="~/assets/img/select.svg" /></button>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-12">
+                        <button id="btn-excel-export" type="button" class="btn btn-outline-primary lightBtn"> <img src="~/assets/img/excel.svg" /> Export to Excel</button>&nbsp;
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container pr-0">
+            <div class="row">
+                <div class="col-lg-12 nominationTablecard ">
+                    <div>
+                        <div class="card-body p-0 ">
+                            <table id="nominationDatatable" class="table datatable nominationTable">
+                                <thead>
+                                    <tr>
+                                        <th class="status ">Status</th>
+                                        <th class="no-sort nominationselected" style="width: 65px !important;">Nomination selected  for</th>
+                                        <th class="no-sort">Verticals</th>
+                                        <th class="no-sort">Staff No.</th>
+                                        <th class="no-sort">Staff Name</th>
+                                        <th class="no-sort">Staff Email Id</th>
+                                        <th class="no-sort">Staff Mobile No.</th>
+                                        <th class="no-sort">Intake Start Date</th>
+                                        <th class="no-sort">DOJ</th>
+                                        <th class="no-sort">MSIL Tenure</th>
+                                        <th class="no-sort">DESG</th>
+                                        <th class="no-sort">DIVN</th>
+                                        <th class="no-sort">DEPT</th>
+                                        <th class="no-sort">Grade Check</th>
+                                        <th class="no-sort">Approver Name</th>
+                                        <th class="no-sort">Approver 1 Staff ID</th>
+                                        <th class="no-sort">Approver 2 Name</th>
+                                        <th class="no-sort">Approver 2 Staff ID</th>
+                                        <th class="no-sort">Remarks</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/nomination.js"></script>
+}

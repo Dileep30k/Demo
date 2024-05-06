@@ -1,0 +1,55 @@
+@model Edu.Abstraction.Models.Designation
+
+@{
+    ViewData["Title"] = (Model.DesignationId > 0) ? $"Edit Designation - {Model.DesignationName}" : "Create New Designation";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">@(Model.DesignationId > 0 ? $"Edit Designation - {Model.DesignationName}" : "Create New Designation")</h1>
+                </div>
+                <div class="col-sm-6">
+                    <a class="btn btn-outline-primary float-sm-right" asp-area="" asp-controller="Designation" asp-action="Index" onclick="showLoading();">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="container">
+
+            <form id="designationForm" enctype="multipart/form-data" class="form-horizontal form-bordered" asp-action="Manage" asp-controller="Designation">
+                <section class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card card-primary">
+                                <div class="card-body">
+                                    <input asp-for="DesignationId" type="hidden" id="DesignationId">
+                                    <div class="row">
+                                        <div class="form-group col-12">
+                                            <label for="DesignationName">Designation Name<span class="required">*</span></label>
+                                            <input maxlength="100" asp-for="DesignationName" type="text" id="DesignationName" class="form-control">
+                                            <span asp-validation-for="DesignationName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer">
+                                <a asp-controller="Designation" asp-action="Index" class="btn btn-secondary">Cancel</a>
+                                <input type="submit" value="Save" class="btn btn-success float-right" onclick="return validateDesignation();">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/designation.js"></script>
+}

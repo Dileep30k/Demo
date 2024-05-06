@@ -1,0 +1,141 @@
+@model NominationFormModel
+@{
+    var status = (NominationStatuses)Enum.Parse(typeof(NominationStatuses), Model.NominationStatusId.ToString());
+}
+<div class="content-wrapper">
+    <form id="formNomination" class="form-horizontal form-bordered">
+        @if (Model.NominationStatusId > 2)
+        {
+            <div class="content-header pt-0">
+                <div class="container pl-0">
+                    <div class="row mb-2 align-items-center">
+                        <div class="col-sm-6  pl-2">
+                            @*<h1 class="m-0 innerHeading">Nomination Form</h1>*@
+                           @* <a href="javascript:void(0)" onclick="toggelForm()" class="font-t-blue font-bold font-16 backBtn ">
+                                <img src="~/assets/img/back.png" />
+                                <label class="nominationfillhead">
+                                    Please fill the below nomination form
+                                </label>
+                            </a>*@
+                        </div>
+                        <div class="col-sm-6 font-t-blue font-bold font-18  text-right pr-0">
+                            <button class="m-0 lightBlueBtn">Status:  @Model.NominationStatusName</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <section class="container">
+            <div class="row nominationForm">
+                <div class="col-md-12 boxShadow">
+                    <div class="card card-primary">
+                        <div class="row mb-3">
+                           @* <div class="col-sm-3 pl-4 mt-4">
+                                <img src="~/img/maruti-logo.jpg" alt="Higher Education System" width="154px">
+                            </div>*@
+                            <div class="col-sm-8 font-t-blue font-bold font-16 text-right pt-3 pr-4 mt-3">
+                                Nomination Form For @Model.SchemeName Program
+                            </div>
+                            <div class="col-sm-4 pr-4">
+                                <img class="float-right mt-2 " src="~/assets/img/msta_logo_2.svg" alt="Higher Education System" height="95px" width="92px " style="object-fit:contain">
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <input asp-for="NominationId" type="hidden">
+                            <input asp-for="NominationStatusId" type="hidden">
+                            <div class="row customForm-nomination-edit customForm-nomination">
+                                <div class="form-group col-6 d-flex align-items-end ">
+                                    <label class="col-3" for="StaffName">Name</label>
+                                    <input asp-for="StaffName" type="text" class="form-control" disabled>
+                                </div>
+                                <div class="form-group col-6 d-flex  align-items-end">
+                                    <label for="MsilUserId" class="col-3">Staff Id</label>
+                                    <input asp-for="MsilUserId" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                            <div class="row customForm-nomination customForm-nomination-edit mt-3">
+                                <div class="form-group col-6 d-flex  align-items-end">
+                                    <label for="Department" class="col-3">Department</label>
+                                    <input asp-for="Department" type="text" class="form-control" disabled>
+                                </div>
+                                <div class="form-group col-6 d-flex align-items-end">
+                                    <label for="Division" class="col-3">Division</label>
+                                    <input asp-for="Division" type="text" class="form-control" disabled>
+                                </div>
+                            </div>
+                            @if (status != NominationStatuses.Rejected)
+                            {
+                                <div class="row mt-3 customForm-nomination-edit">
+                                    <div class="form-group col-6 d-flex align-items-end mobileNum customForm-nomination-edit">
+                                        <label for="MobileNo" class="col-3 ">Mobile No <span class="required">*</span></label>
+                                        <input maxlength="10" asp-for="MobileNo" type="text" class="form-control numberOnly" placeholder="Please enter your mobile number">
+                                    </div>
+
+                                    <div class="form-group col-6 d-flex align-items-end customForm-nomination">
+                                        <label for="Gender" class="col-3">Gender <span class="required">*</span></label>
+                                        <div>
+                                            <label> <input asp-for="Gender" type="radio" value="Male" /> Male</label>
+                                            <label class="ml-4"> <input asp-for="Gender" type="radio" value="Female" /> Female</label>
+                                            <label class="ml-4"> <input asp-for="Gender" type="radio" value="Others" /> Others</label>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                           <div class="form-group col-1 d-flex align-items-center">
+                                            </div>
+                                            <div class="form-group col-4 pl-5 d-flex align-items-center">
+                                               <span asp-validation-for="MobileNo" class="text-danger"></span>
+                                            </div>
+                                            <div class="form-group col-2 d-flex align-items-center">
+                                            </div>
+                                            <div class="form-group col-4 d-flex pl-5 align-items-center">
+                                                <span asp-validation-for="Gender" class="text-danger"></span>
+                                           </div>
+
+                                </div>
+                                <div class="row d-flex fillnominationform align-items-end mobileNum">
+                                    <div class="form-group col-12 d-flex customForm-nomination-edit  align-items-end">
+                                        <label for="SchemeName" class="col-2" style="max-width: 12% !important">Institutes <span class="required">*</span></label>
+                                        @Html.DropDownList("institutes", (List<SelectListItem>)ViewBag.Institutes, (new { multiple = "multiple", @class = "form-control select2" }))
+                                       
+                                        @Html.HiddenFor(m => m.SelectedInstitutes)
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="form-group col-1 d-flex align-items-center">
+                                    </div>
+                                    <div class="form-group col-4 pl-5 d-flex align-items-center">
+                                        <span class="text-danger display-none" id="institutes-error">
+                                            Please select institute
+                                        </span>
+                                    </div>
+                                    
+
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="form-group col-6 customForm-nomination-edit d-flex align-items-center">
+                                    <label class="col-3" for="City">Exam Date:</label>
+                                    <div class="datesnomi"> @Model.ExamDate.ToString("dd MMMM, yyyy (dddd)")</div>
+                                </div>
+                            </div>
+                        </div>
+                        @if ((status == NominationStatuses.Submitted || status == NominationStatuses.Accepted ||
+                        status == NominationStatuses.DepReview || status == NominationStatuses.DivReview) &&
+                        Model.NominationCutoffDate.Date >= DateTime.Now.Date)
+                        {
+                            <div class="card-footer">
+                                <input type="button" value="Submit" class="btn darkbtn  float-right" onclick="return validateNomination();">
+                                <a href="javascript:void(0)" class="btn btn-outline-primary float-right" onclick="toggelForm();">Cancel</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </form>
+</div>

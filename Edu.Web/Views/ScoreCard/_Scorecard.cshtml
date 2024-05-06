@@ -1,0 +1,72 @@
+@model NominationFormModel
+<div class="content-wrapper">
+    <form id="formScorecard" class="form-horizontal form-bordered">
+        <section class="container pl-0">
+            <div class="row nominationForm">
+                <div class="col-md-12 boxShadow">
+                    <div class=" card-primary">
+                        <div class="row mb-3">
+                            <div class="col-sm-12 font-t-blue font-bold font-18 text-center mt-4 pl-2">
+                                Upload Score Card
+                            </div>
+                        </div>
+                        <div class="card-body pl-0 pr-0">
+                            <input asp-for="NominationId" type="hidden">
+                            <div class="row mb-1">
+                                <div class="form-group col-6 d-flex">
+                                    <label class="col-3" for="ExamDate">Exam Date</label>
+                                    <input asp-for="ExamDate" type="text" class="form-control date-picker" disabled>
+                                </div>
+                                <div class="form-group col-6 d-flex">
+                                    <label for="Score" class="col-3">Total Percentile <span class="required">*</span></label>
+                                    <input asp-for="Score" type="text" class="form-control decimalOnly percentileInput" maxlength="5" max="100">
+                                    <span class="text-danger display-none" id="scoreError">Please enter score</span>
+
+                                </div>
+                          
+                            </div>
+                            @*<div class="row g-3">
+                                <div class="col-6  font-bold p-2 uploadHeading">
+                                    Upload Scorecard <span class="required">*</span>
+                                </div>
+                            </div>*@
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <div class=" card-primary uploadCard dragfile">
+                                        <div class="card-body text-center cursor-pointer" id="dropZone" onclick="openUpload();">
+                                            <div class="mb-3 ">
+                                                @*<i class="fas fa-file-excel"></i>*@
+                                                <img class="xlsIcon" src="~/assets/img/pdf.svg" />
+                                            </div>
+                                            <div class="font-16 mb-1 eligibilityDrag">
+                                                Drag your  file or
+                                                <a class="font-t-blue font-bold" href="javascript:void(0)">
+                                                    Browse File
+                                                </a>
+                                            </div>
+                                            <div class="eligibilityinst">
+                                                File should be only in .jpeg or .pdf
+                                            </div>
+                                            <div id="uploadFileName" class="font-bold mt-2">
+                                                No file uploaded.
+                                            </div>
+                                        </div>
+                                        <input class="display-none" type="file" name="file" id="uploadFile">
+                                    </div>
+                                  
+                                </div>
+                                <div id="uploadError" class="text-danger  display-none  mt-3 ml-2" >
+                                    Please upload file
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer pr-2">
+                            <input type="button" value="Submit" class="btn submitBtn float-right" onclick="saveScorecard();">
+                            <a href="javascript:void(0)" onclick="cancelForm()" class="btn cancelBtn float-right">Cancel</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </form>
+</div>

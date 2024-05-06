@@ -1,0 +1,53 @@
+﻿@{
+    ViewBag.Title = "Intake Templates";
+}
+
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container">
+            <div class="row intakeRow">
+                <div class="col-md-1">
+                    <label class="heading">Scheme: </label>
+                </div>
+                <div class="col-md-3 selectschme headingDropdown schmeDropdown">
+                    @Html.DropDownList("filterSchemeId", (List<SelectListItem>)ViewBag.Schemes, (new { @class = "form-control select2", onchange = "getSchemeIntakes(this);" }))
+                </div>
+                <div class="col-md-2" style="max-width: 126px;">
+                    <label class="heading">Financial Year: </label>
+                </div>
+                <div class="col-md-4 selectschme headingDropdown financialDropdown ">
+
+                    @Html.DropDownList("filterIntakeId", (List<SelectListItem>)ViewBag.Intakes, (new { @class = "form-control select2", onchange = "filterTable();" }))
+                </div>
+                <div class="col pr-1 newIntake ">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <section class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class=" card-primary">
+                        <div class="card-body  p-0">
+                            <table id="templateDatatable" class="table tableDiv datatable table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Sr. No.</th>
+                                        <th>Intake</th>
+                                        <th>Template Name</th>
+                                        <th>Template Subject</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/template.js"></script>
+}
